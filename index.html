@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<meta charset=utf-8>
+<title></title>
+
+<template id=origin>
+  <p>
+    Vous achetez un smartphone sur internet. Est-ce que le vendeur expedie
+    depuis l'Union Européenne ?
+  </p>
+
+  <button data-href=duty-free>Oui</button>
+  <button data-href=duty-20>Non</button>
+  <button data-href=duty-unknown>Je ne sais pas</button>
+</template>
+
+<template id=duty-free data-last>
+  <p>0%</p>
+  <p>
+    Un smartphone expédié depuis l'Union Européenne a déjà payé la TVA et
+    n'est pas assujetti aux frais de Douane.
+  </p>
+</template>
+
+<template id=duty-20 data-last>
+  <p>20%</p>
+  <p>
+    Un smartphone expédié depuis un pays non ressortissant de l'Union
+      Européenne est soumis à la TVA française de 20%.
+  </p>
+</template>
+
+<template id=duty-unknown>
+  <p>20%</p>
+  <p>
+    Un smartphone expédié depuis un pays non ressortissant de l'Union
+      Européenne est soumis à la TVA française de 20%.<br>
+    Un smartphone qui provient de l'<abbr title="Union Européenne">UE</abbr>
+    n'est pas soumis à la TVA française.
+  </p>
+</template>
+
+<template id=end>
+  <p>
+    Merci de votre retour.
+  </p>
+  <p>
+    <a data-href=origin>Je souhaite faire une nouvelle simulation.</a>
+  </p>
+</template>
+
+<section id=container></section>
+
+<div id=satisfaction class=hidden>
+  <p>J'ai la réponse à ma question</p>
+  <button data-href=end>Oui</button>
+  <button data-href=end>Non</button>
+</div>
+
+<script>
+  var container = document.querySelector('#container')
+  var satisfaction = document.querySelector('#satisfaction')
+
+  function showPage(page) {
+    var source = document.querySelector('#' + page)
+    container.innerHTML = source.innerHTML
+    var withSatisfaction = source.hasAttribute('data-last')
+    if (withSatisfaction) {
+      container.innerHTML += document.querySelector('#satisfaction').innerHTML
+    }
+    initListerners(container)
+  }
+
+  function initListerners(element) {
+    [].forEach.call(element.querySelectorAll('button[data-href]'), function(button) {
+      button.addEventListener('click', function(event) {
+        showPage(button.getAttribute('data-href'))
+      })
+    })
+  }
+
+  showPage('origin', false)
+</script>
+</html>
