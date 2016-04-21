@@ -3,7 +3,30 @@
 <meta charset=utf-8>
 <title></title>
 
+<style>
+  html {
+    font-family: helvetica;
+    font-size: 18px;
+    padding: 20px;
+    background: #fff;
+  }
+  body {
+    background: #f6f6f6;
+    padding: 20px;
+    border: 1px solid #ccc;
+  }
+  button {
+    font-size: .9em;
+    padding: 10px 20px;
+    background: #ccc;
+    border: 1px solid #999;
+    font-weight: bold;
+    margin-right: 20px;
+  }
+</style>
+
 <template id=origin>
+  <h1>Importer un smartphone</h1>
   <p>
     Vous achetez un smartphone sur internet. Est-ce que le vendeur expedie
     depuis l'Union Européenne ?
@@ -15,7 +38,7 @@
 </template>
 
 <template id=duty-free data-last>
-  <p>0%</p>
+  <h1>0% de TVA</h1>
   <p>
     Un smartphone expédié depuis l'Union Européenne a déjà payé la TVA et
     n'est pas assujetti aux frais de Douane.
@@ -23,15 +46,15 @@
 </template>
 
 <template id=duty-20 data-last>
-  <p>20%</p>
+  <h1>20% de TVA</h1>
   <p>
     Un smartphone expédié depuis un pays non ressortissant de l'Union
       Européenne est soumis à la TVA française de 20%.
   </p>
 </template>
 
-<template id=duty-unknown>
-  <p>20%</p>
+<template id=duty-unknown data-last>
+  <h1>0% ou 20% de TVA</h1>
   <p>
     Un smartphone expédié depuis un pays non ressortissant de l'Union
       Européenne est soumis à la TVA française de 20%.<br>
@@ -41,6 +64,7 @@
 </template>
 
 <template id=end>
+  <h1>Fin de la simulation</h1>
   <p>
     Merci de votre retour.
   </p>
