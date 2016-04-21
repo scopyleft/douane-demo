@@ -45,17 +45,17 @@
     Merci de votre retour.
   </p>
   <p>
-    <a data-href=origin>Je souhaite faire une nouvelle simulation.</a>
+    <button data-href=origin>Recommencer</button>
   </p>
 </template>
 
 <section id=container></section>
 
-<div id=satisfaction class=hidden>
+<template id=satisfaction>
   <p>J'ai la réponse à ma question</p>
   <button data-href=end>Oui</button>
   <button data-href=end>Non</button>
-</div>
+</template>
 
 <script>
   var container = document.querySelector('#container')
