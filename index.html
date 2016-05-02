@@ -83,9 +83,8 @@
 
 <script>
   var container = document.querySelector('#container')
-  var satisfaction = document.querySelector('#satisfaction')
 
-  function showPage(page) {
+  function showPage (page) {
     var source = document.querySelector('#' + page)
     container.innerHTML = source.innerHTML
     var withSatisfaction = source.hasAttribute('data-last')
@@ -95,14 +94,14 @@
     initListerners(container)
   }
 
-  function initListerners(element) {
-    [].forEach.call(element.querySelectorAll('button[data-href]'), function(button) {
-      button.addEventListener('click', function(event) {
+  function initListerners (element) {
+    [].forEach.call(element.querySelectorAll('button[data-href]'), function (button) {
+      button.addEventListener('click', function (event) {
         showPage(button.getAttribute('data-href'))
       })
     })
   }
 
-  showPage('origin', false)
+  showPage('origin')
 </script>
 </html>
