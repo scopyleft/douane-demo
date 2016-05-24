@@ -209,6 +209,9 @@
       container.innerHTML += document.querySelector('#satisfaction').innerHTML
       container.classList.add('satisfaction')
     }
+    else if(container.classList.contains('satisfaction')) {
+      container.classList.remove('satisfaction')
+    }
     initListerners(container)
   }
 
