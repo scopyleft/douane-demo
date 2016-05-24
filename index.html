@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <meta charset=utf-8>
-<title></title>
+<title>Calcul des droits de douanes</title>
 
 <style>
   html {
@@ -25,41 +25,52 @@
   }
 </style>
 
-<template id=origin>
-  <h1>Importer un smartphone</h1>
-  <p>
-    Vous achetez un smartphone sur internet. Est-ce que le vendeur expedie
-    depuis l'Union Européenne ?
-  </p>
+<template id=warning>
+  <h1>Bienvenue sur le prototype de « Calcul des droits de douane » pour estimer le montant des droits à payer pour l’achat en ligne d’un smartphone.</h1>
 
+  <button data-href=amount>Commencer la simulation</button>
+
+  <h2>Avertissement</h2>
+  <p>
+    La direction générale des douanes et droits indirects propose un prototype dont la finalité est d’informer l’usager de France métropolitaine des taxes qu’il pourrait avoir à acquitter en cas d’achat à distance, notamment via des sites Internet de ventes en ligne. S’appuyant sur les taux de TVA à acquitter en France ainsi que sur le tarif douanier commun des pays de l’Union Européenne (droits de douane), l’information restitue (taux, montants) n’a qu’un caractère indicatif. En particulier, le prototype ne traite pas de l’ensemble des mesures du commerce extérieur et de la totalité des taxes pouvant être appliquées. Ainsi, les montants des droits et taxes calculés peuvent être différents de ceux réellement acquittés. La consultation des textes légaux et réglementaires sont lles seuls à avoir force légale.
+  </p>
+</template>
+
+<template id=amount>
+  <h1>Renseignez le montant de votre achat.</h1>
+  <form data-href=origin>
+    <label for=price>Prix en euros :</label>
+    <input type=number name=price value=100 required>
+    <input type=submit value=Continuer>
+  </form>
+
+</template>
+
+<template id=origin>
+  <h1>Le vendeur expédie votre smartphone depuis un pays de l’Union européenne.</h1>
   <button data-href=duty-free>Oui</button>
   <button data-href=duty-20>Non</button>
   <button data-href=duty-unknown>Je ne sais pas</button>
 </template>
 
 <template id=duty-free data-last>
-  <h1>0% de TVA</h1>
+  <h1>Pas de TVA et pas de droits de douane à payer.</h1>
   <p>
-    Un smartphone expédié depuis l'Union Européenne a déjà payé la TVA et
-    n'est pas assujetti aux frais de Douane.
+    L’envoi d’un produit depuis l’Union européenne est déjà soumis à la TVA au taux en vigueur dans le pays d’expédition et n’est pas assujetti aux droits de douane.
   </p>
 </template>
 
 <template id=duty-20 data-last>
-  <h1>20% de TVA</h1>
+  <h1>20% de TVA, pas de droits de douane.</h1>
   <p>
-    Un smartphone expédié depuis un pays non ressortissant de l'Union
-      Européenne est soumis à la TVA française de 20%.
+    L’envoi d’un produit depuis un pays non membre de l’Union européenne est soumis à la TVA de 20 %, mais pas à des droits de douane.
   </p>
 </template>
 
 <template id=duty-unknown data-last>
-  <h1>0% ou 20% de TVA</h1>
+  <h1>0% ou 20% de TVA, pas de droits de douane.</h1>
   <p>
-    Un smartphone expédié depuis un pays non ressortissant de l'Union
-      Européenne est soumis à la TVA française de 20%.<br>
-    Un smartphone qui provient de l'<abbr title="Union Européenne">UE</abbr>
-    n'est pas soumis à la TVA française.
+    L’envoi d’un produit depuis l’Union européenne est déjà soumis à la TVA au taux en vigueur dans le pays d’expédition et n’est pas assujetti aux droits de douane. L’envoi d’un produit depuis un pays non membre de l’Union européenne est soumis à la TVA de 20 %, mais pas à des droits de douane.
   </p>
 </template>
 
@@ -69,14 +80,14 @@
     Merci de votre retour.
   </p>
   <p>
-    <button data-href=origin>Recommencer</button>
+    <button data-href=warning>Recommencer</button>
   </p>
 </template>
 
 <section id=container></section>
 
 <template id=satisfaction>
-  <p>J'ai la réponse à ma question</p>
+  <p>J’ai la réponse à ma question</p>
   <button data-href=end>Oui</button>
   <button data-href=end>Non</button>
 </template>
@@ -95,13 +106,18 @@
   }
 
   function initListerners (element) {
-    [].forEach.call(element.querySelectorAll('button[data-href]'), function (button) {
+    ;[].forEach.call(element.querySelectorAll('button[data-href]'), function (button) {
       button.addEventListener('click', function (event) {
         showPage(button.getAttribute('data-href'))
       })
     })
+    ;[].forEach.call(element.querySelectorAll('form'), function (form) {
+      form.addEventListener('submit', function (event) {
+        showPage(form.getAttribute('data-href'))
+      })
+    })
   }
 
-  showPage('origin')
+  showPage('warning')
 </script>
 </html>
