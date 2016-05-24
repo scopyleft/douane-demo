@@ -7,33 +7,126 @@
   html {
     font-family: helvetica;
     font-size: 18px;
-    padding: 20px;
+    padding: 20px 0;
     background: #fff;
+    line-height: 1.45em;
   }
   body {
-    background: #f6f6f6;
-    padding: 20px;
-    border: 1px solid #ccc;
+    margin: 0;
+  }
+
+  input {
+    font: inherit;
+    border: 1px solid #999;
+    padding: .2em .5em;
+    border-radius: 5px;
+  }
+
+  header,
+  main,
+  footer {
+    padding: 0 5%;
+  }
+
+  header {
+    display: flex;
+    margin-bottom: 1em;
+    align-items: center;
+  }
+  header img {
+    max-height: 80px;
+  }
+  header h1 {
+    margin-left: 2em;
+    text-transform: uppercase;
+    font-size: 18px;
+    font-weight: normal;
+    flex: 1;
+  }
+  header h1 span {
+    font-weight: bold;
+  }
+  header small {
+    color: #f99;
+    text-transform: uppercase;
+    text-align: right;
+    width: 20%;
+  }
+
+  main {
+    background: #ddd;
+    padding: 2em 5%;
+    text-align: center;
+  }
+  main h1,
+  main h2 {
+    font-weight: lighter;
+  }
+  main h1 {
+    font-size: 1.4em;
+  }
+  main h2 {
+    font-size: 1.3em;
   }
   button {
-    font-size: .9em;
-    padding: 10px 20px;
-    background: #ccc;
-    border: 1px solid #999;
-    font-weight: bold;
+    font-size: 1em;
+    padding: 20px 70px;
+    background-color: #0275d8;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-weight: normal;
     margin-right: 20px;
+    color: #fff;
   }
+  aside {
+    margin: 1em auto;
+    border: 1px solid #999;
+    padding: 1.5em;
+    width: 75%;
+    min-width: 300px;
+  }
+
+  [data-page=amount] button,
+  [data-page=warning] button {
+    display: block;
+    margin: 2em auto;
+  }
+  [data-page=warning] button {
+    margin: 5em inherit;
+  }
+
+  footer {
+    display: flex;
+    text-align: center;
+    justify-content: space-around;
+    color: #666;
+    padding-top: 1em;
+    font-size: .9em;
+    line-height: 1em;
+  }
+  footer a {
+    width: 20%;
+  }
+
+  button.unknown {
+    background-color: #ec971f;
+  }
+  .satisfaction button {
+    background-color: #5cb85c;
+  }
+
 </style>
 
 <template id=warning>
   <h1>Bienvenue sur le prototype de « Calcul des droits de douane » pour estimer le montant des droits à payer pour l’achat en ligne d’un smartphone.</h1>
 
   <button data-href=amount>Commencer la simulation</button>
-
-  <h2>Avertissement</h2>
-  <p>
-    La direction générale des douanes et droits indirects propose un prototype dont la finalité est d’informer l’usager de France métropolitaine des taxes qu’il pourrait avoir à acquitter en cas d’achat à distance, notamment via des sites Internet de ventes en ligne. S’appuyant sur les taux de TVA à acquitter en France ainsi que sur le tarif douanier commun des pays de l’Union Européenne (droits de douane), l’information restitue (taux, montants) n’a qu’un caractère indicatif. En particulier, le prototype ne traite pas de l’ensemble des mesures du commerce extérieur et de la totalité des taxes pouvant être appliquées. Ainsi, les montants des droits et taxes calculés peuvent être différents de ceux réellement acquittés. La consultation des textes légaux et réglementaires sont lles seuls à avoir force légale.
-  </p>
+  <aside>
+    <h2>Avertissement</h2>
+    <p>
+      La direction générale des douanes et droits indirects propose un prototype dont la finalité est d’informer l’usager de France métropolitaine des taxes qu’il pourrait avoir à acquitter en cas d’achat à distance, notamment via des sites Internet de ventes en ligne. S’appuyant sur les taux de TVA à acquitter en France ainsi que sur le tarif douanier commun des pays de l’Union Européenne (droits de douane), l’information restitue (taux, montants) n’a qu’un caractère indicatif. En particulier, le prototype ne traite pas de l’ensemble des mesures du commerce extérieur et de la totalité des taxes pouvant être appliquées. Ainsi, les montants des droits et taxes calculés peuvent être différents de ceux réellement acquittés. La consultation des textes légaux et réglementaires sont lles seuls à avoir force légale.
+    </p>
+  </aside>
 </template>
 
 <template id=amount>
@@ -41,7 +134,7 @@
   <form data-href=origin>
     <label for=price>Prix en euros :</label>
     <input type=number name=price value=100 required>
-    <input type=submit value=Continuer>
+    <button type=submit>Continuer</button>
   </form>
 
 </template>
@@ -50,7 +143,7 @@
   <h1>Le vendeur expédie votre smartphone depuis un pays de l’Union européenne.</h1>
   <button data-href=duty-free>Oui</button>
   <button data-href=duty-20>Non</button>
-  <button data-href=duty-unknown>Je ne sais pas</button>
+  <button data-href=duty-unknown class=unknown>Je ne sais pas</button>
 </template>
 
 <template id=duty-free data-last>
@@ -84,13 +177,25 @@
   </p>
 </template>
 
-<section id=container></section>
-
 <template id=satisfaction>
   <p>J’ai la réponse à ma question</p>
   <button data-href=end>Oui</button>
   <button data-href=end>Non</button>
 </template>
+
+<header>
+  <img src=./images/logo.png>
+  <h1><span>Calcul</span> des droits et taxes</h1>
+  <small>Version test</small>
+</header>
+
+<main id=container></main>
+
+<footer>
+  <a>Conditions d'utilisation du prototype de test</a>
+  <a>Règlementation applicable en matière de droits de douane</a>
+  <a>Liste des pays membres de l'Union Européenne</a>
+</footer>
 
 <script>
   var container = document.querySelector('#container')
@@ -98,9 +203,11 @@
   function showPage (page) {
     var source = document.querySelector('#' + page)
     container.innerHTML = source.innerHTML
+    container.setAttribute('data-page', page)
     var withSatisfaction = source.hasAttribute('data-last')
     if (withSatisfaction) {
       container.innerHTML += document.querySelector('#satisfaction').innerHTML
+      container.classList.add('satisfaction')
     }
     initListerners(container)
   }
