@@ -23,8 +23,9 @@
   }
 
   header,
-  main,
-  footer {
+  main {
+    max-width: 1000px;
+    margin: 0 auto;
     padding: 0 5%;
   }
 
@@ -46,9 +47,10 @@
   header h1 span {
     font-weight: bold;
   }
-  header small {
+  header a {
+    text-decoration: none;
+    cursor: pointer;
     color: #f99;
-    text-transform: uppercase;
     text-align: right;
     width: 20%;
   }
@@ -79,9 +81,10 @@
     color: #fff;
   }
   aside {
-    margin: 1em auto;
     border: 1px solid #999;
-    padding: 1.5em;
+    margin: 1em auto;
+    margin-top: 3em;
+    padding: .5em .8em;
     width: 75%;
     min-width: 300px;
   }
@@ -95,19 +98,6 @@
     margin: 5em inherit;
   }
 
-  footer {
-    display: flex;
-    text-align: center;
-    justify-content: space-around;
-    color: #666;
-    padding-top: 1em;
-    font-size: .9em;
-    line-height: 1em;
-  }
-  footer a {
-    width: 20%;
-  }
-
   button.unknown {
     background-color: #ec971f;
   }
@@ -115,28 +105,34 @@
     background-color: #5cb85c;
   }
 
+  footer {
+    text-align: center;
+  }
+
+  footer p {
+    display: inline-block;
+  }
+  footer button {
+    display: inline-block;
+    padding: 5px 20px;
+  }
+  footer button:first-of-type {
+    margin-left: 1.5em;
+  }
+
 </style>
 
 <template id=warning>
-  <h1>Bienvenue sur le prototype de « Calcul des droits de douane » pour estimer le montant des droits à payer pour l’achat en ligne d’un smartphone.</h1>
+  <h1>Bienvenue sur le prototype de « Calcul des droits de douane » pour estimer le montant des droits à payer pour l’achat en ligne d’un smartphone.</h1>
 
-  <button data-href=amount>Commencer la simulation</button>
   <aside>
     <h2>Avertissement</h2>
     <p>
-      La direction générale des douanes et droits indirects propose un prototype dont la finalité est d’informer l’usager de France métropolitaine des taxes qu’il pourrait avoir à acquitter en cas d’achat à distance, notamment via des sites Internet de ventes en ligne. S’appuyant sur les taux de TVA à acquitter en France ainsi que sur le tarif douanier commun des pays de l’Union Européenne (droits de douane), l’information restitue (taux, montants) n’a qu’un caractère indicatif. En particulier, le prototype ne traite pas de l’ensemble des mesures du commerce extérieur et de la totalité des taxes pouvant être appliquées. Ainsi, les montants des droits et taxes calculés peuvent être différents de ceux réellement acquittés. La consultation des textes légaux et réglementaires sont lles seuls à avoir force légale.
+      L’information restituée (taux, montants) n’a qu’un caractère indicatif. La consultation des textes légaux et réglementaires sont les seuls à avoir force légale.<br>
+      En poursuivant votre navigation sur ce site, vous acceptez l’utilisation de cookies nous permettant de suivre votre navigation ainsi que de réaliser des statistiques de visites.
     </p>
   </aside>
-</template>
-
-<template id=amount>
-  <h1>Renseignez le montant de votre achat.</h1>
-  <form data-href=origin>
-    <label for=price>Prix en euros :</label>
-    <input type=number name=price value=100 required>
-    <button type=submit>Continuer</button>
-  </form>
-
+  <button data-href=origin>Commencer la simulation</button>
 </template>
 
 <template id=origin>
@@ -146,24 +142,41 @@
   <button data-href=duty-unknown class=unknown>Je ne sais pas</button>
 </template>
 
+<template id=about>
+  <h1>À propos du prototype</h1>
+  <p>
+    La direction générale des douanes et droits indirects propose un prototype dont la finalité est d’informer l’usager de France métropolitaine des taxes qu’il pourrait avoir à acquitter en cas d’achat à distance, notamment via des sites internet de ventes en ligne.
+  </p>
+  <p>
+    S'appuyant sur les taux de TVA à acquitter en France ainsi que sur le tarif douanier commun des pays de l'Union europpéenne (droits de douane), l'information restituée (taux, montants) n'a qu'un caractère indicatif.
+    En particulier le prototype ne traite pas de l'ensemble des mesures du commerce extérieur et de la totalité des taxes pouvant être appliquées.
+  </p>
+  <p>
+     Les montants des droits et taxes calculés peuvent être différents de ceux réellement acquittés. La consultation des textes légaux et réglementaires, qui sont les seuls à avoir force légale, demeure impérative.
+  </p>
+
+  <button data-href=warning>Revenir à la simulation</button>
+</template>
+
 <template id=duty-free data-last>
   <h1>Pas de TVA et pas de droits de douane à payer.</h1>
   <p>
-    L’envoi d’un produit depuis l’Union européenne est déjà soumis à la TVA au taux en vigueur dans le pays d’expédition et n’est pas assujetti aux droits de douane.
+    L’envoi d’un <em>smartphone</em> depuis l’Union européenne est déjà soumis à la TVA au taux en vigueur dans le pays d’expédition et n’est pas assujetti aux droits de douane.
   </p>
 </template>
 
 <template id=duty-20 data-last>
   <h1>20% de TVA, pas de droits de douane.</h1>
   <p>
-    L’envoi d’un produit depuis un pays non membre de l’Union européenne est soumis à la TVA de 20 %, mais pas à des droits de douane.
+    L’envoi d’un <em>smartphone</em> depuis un pays non membre de l’Union européenne est soumis à la TVA de 20 %, mais pas à des droits de douane.
   </p>
 </template>
 
 <template id=duty-unknown data-last>
   <h1>0% ou 20% de TVA, pas de droits de douane.</h1>
   <p>
-    L’envoi d’un produit depuis l’Union européenne est déjà soumis à la TVA au taux en vigueur dans le pays d’expédition et n’est pas assujetti aux droits de douane. L’envoi d’un produit depuis un pays non membre de l’Union européenne est soumis à la TVA de 20 %, mais pas à des droits de douane.
+L’envoi d’un <em>smartphone</em> depuis l’Union européenne est déjà soumis à la TVA au taux en vigueur dans le pays d’expédition et n’est pas assujetti aux droits de douane.<br/>
+    L’envoi d’un <em>smartphone</em> depuis un pays non membre de l’Union européenne est soumis à la TVA de 20 %, mais pas à des droits de douane.
   </p>
 </template>
 
@@ -178,7 +191,7 @@
 </template>
 
 <template id=satisfaction>
-  <p>J’ai la réponse à ma question</p>
+  <p>Cette réponse vous est-elle utile ?</p>
   <button data-href=end>Oui</button>
   <button data-href=end>Non</button>
 </template>
@@ -186,19 +199,15 @@
 <header>
   <img src=./images/logo.png>
   <h1><span>Calcul</span> des droits et taxes</h1>
-  <small>Version test</small>
+  <a data-href=about>À propos du prototype</a>
 </header>
 
 <main id=container></main>
-
-<footer>
-  <a>Conditions d'utilisation du prototype de test</a>
-  <a>Règlementation applicable en matière de droits de douane</a>
-  <a>Liste des pays membres de l'Union Européenne</a>
-</footer>
+<footer></footer>
 
 <script>
   var container = document.querySelector('#container')
+  var footer = document.querySelector('footer')
 
   function showPage (page) {
     var source = document.querySelector('#' + page)
@@ -206,24 +215,20 @@
     container.setAttribute('data-page', page)
     var withSatisfaction = source.hasAttribute('data-last')
     if (withSatisfaction) {
-      container.innerHTML += document.querySelector('#satisfaction').innerHTML
-      container.classList.add('satisfaction')
+      footer.innerHTML = document.querySelector('#satisfaction').innerHTML
+      footer.classList.add('satisfaction')
     }
-    else if(container.classList.contains('satisfaction')) {
-      container.classList.remove('satisfaction')
+    else if(footer.classList.contains('satisfaction')) {
+      footer.innerHTML = ''
+      footer.classList.remove('satisfaction')
     }
-    initListerners(container)
+    initListerners(document.body)
   }
 
   function initListerners (element) {
-    ;[].forEach.call(element.querySelectorAll('button[data-href]'), function (button) {
+    ;[].forEach.call(element.querySelectorAll('[data-href]'), function (button) {
       button.addEventListener('click', function (event) {
         showPage(button.getAttribute('data-href'))
-      })
-    })
-    ;[].forEach.call(element.querySelectorAll('form'), function (form) {
-      form.addEventListener('submit', function (event) {
-        showPage(form.getAttribute('data-href'))
       })
     })
   }
