@@ -2,9 +2,15 @@
 <html>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width, initial-scale=1">
-<title>Calcul des droits de douanes</title>
+<title>Calcul des taxes et droits de douane</title>
 
 <style>
+  /* adapt browsers compatibility */
+  template {
+    display: none;
+  }
+  /* end browsers compatibility */
+
   html {
     font-family: helvetica;
     font-size: 18px;
@@ -134,12 +140,12 @@
 </style>
 
 <template id=warning>
-  <h1>Bienvenue sur le prototype de « Calcul des droits de douane » pour estimer le montant des droits à payer pour l’achat en ligne d’un smartphone.</h1>
+  <h1>Bienvenue sur le prototype de « Calcul des taxes et droits de douane » pour estimer le montant des droits à payer pour l’achat en ligne d’un smartphone.</h1>
 
   <aside>
     <h2>Avertissement</h2>
     <p>
-      L’information restituée (taux, montants) n’a qu’un caractère indicatif. La consultation des textes légaux et réglementaires sont les seuls à avoir force légale.<br>
+      Les montants des droits et taxes calculés peuvent être différents de ceux réellement acquittés. La consultation des textes légaux et réglementaires, qui sont les seuls à avoir force légale, demeure impérative.<br>
       En poursuivant votre navigation sur ce site, vous acceptez l’utilisation de cookies nous permettant de suivre votre navigation ainsi que de réaliser des statistiques de visites.
     </p>
   </aside>
@@ -172,29 +178,30 @@
 <template id=duty-free data-last>
   <h1>Pas de TVA et pas de droits de douane à payer.</h1>
   <p>
-    L’envoi d’un <em>smartphone</em> depuis l’Union européenne est déjà soumis à la TVA au taux en vigueur dans le pays d’expédition et n’est pas assujetti aux droits de douane.
+    La réception d'un <em>smartphone</em> acheté dans un pays de l'Union européenne est déjà soumise à la TVA (taux en vigueur dans le pays d'expédition) et n'est pas assujettie aux droits de douane.
   </p>
 </template>
 
 <template id=duty-20 data-last>
   <h1>20% de TVA, pas de droits de douane.</h1>
   <p>
-    L’envoi d’un <em>smartphone</em> depuis un pays non membre de l’Union européenne est soumis à la TVA de 20 %, mais pas à des droits de douane.
+    La réception d'un <em>smartphone</em> acheté dans un pays non membre de l'Union européenne est soumise à une TVA de 20 % mais pas à des droits de douane.
   </p>
 </template>
 
 <template id=duty-unknown data-last>
   <h1>0% ou 20% de TVA, pas de droits de douane.</h1>
   <p>
-L’envoi d’un <em>smartphone</em> depuis l’Union européenne est déjà soumis à la TVA au taux en vigueur dans le pays d’expédition et n’est pas assujetti aux droits de douane.<br/>
-    L’envoi d’un <em>smartphone</em> depuis un pays non membre de l’Union européenne est soumis à la TVA de 20 %, mais pas à des droits de douane.
+    La réception d'un smartphone acheté dans un pays de l'Union européenne est déjà soumise à la TVA (taux en vigueur dans le pays d'expédition) et n'est pas assujettie aux droits de douane.<br>
+    La réception d'un smartphone acheté dans un pays non membre de l'Union européenne est soumise à une TVA de 20 % mais pas à des droits de douane.
   </p>
 </template>
 
 <template id=end>
   <h1>Fin de la simulation</h1>
   <p>
-    Merci de votre retour.
+    Fin de la simulation.<br>
+    Merci d'avoir utilisé le prototype.
   </p>
   <p>
     <button name=startover data-href=warning>Recommencer</button>
@@ -209,7 +216,7 @@ L’envoi d’un <em>smartphone</em> depuis l’Union européenne est déjà sou
 
 <header>
   <img src=./images/logo.png>
-  <h1><span>Calcul</span> des droits et taxes</h1>
+  <h1><span>Calcul</span> des taxes et droits de douane</h1>
   <a name=about data-href=about>À propos du prototype</a>
 </header>
 
