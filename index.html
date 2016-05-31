@@ -258,7 +258,7 @@
       footer.classList.remove('satisfaction')
     }
     var customEvent = document.createEvent('CustomEvent')
-    customEvent.initCustomEvent('showpage', true, true, { detail: page })
+    customEvent.initCustomEvent('showpage', true, true, page)
     document.dispatchEvent(customEvent)
     initListerners(document.body)
   }
@@ -267,7 +267,7 @@
     ;[].forEach.call(element.querySelectorAll('[data-href]'), function (button) {
       button.addEventListener('click', function (event) {
         var customEvent = document.createEvent('CustomEvent')
-        customEvent.initCustomEvent('buttonclick', true, true, { detail: button })
+        customEvent.initCustomEvent('buttonclick', true, true, button)
         document.dispatchEvent(customEvent)
         showPage(button.getAttribute('data-href'))
       })
