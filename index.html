@@ -97,11 +97,11 @@
   }
 
   [data-page=amount] button,
-  [data-page=warning] button {
+  [data-page=accueil] button {
     display: block;
     margin: 2em auto;
   }
-  [data-page=warning] button {
+  [data-page=accueil] button {
     margin: 5em inherit;
   }
 
@@ -142,7 +142,7 @@
 
 </style>
 
-<template id=warning>
+<template id=accueil>
   <h1>Bienvenue sur le prototype de « Calcul des taxes et droits de douane » pour estimer le montant des droits à payer pour l’achat en ligne d’un smartphone.</h1>
 
   <aside>
@@ -152,17 +152,17 @@
       En poursuivant votre navigation sur ce site, vous acceptez l’utilisation de cookies nous permettant de suivre votre navigation ainsi que de réaliser des statistiques de visites.
     </p>
   </aside>
-  <button name=start data-href=origin>Commencer la simulation</button>
+  <button name=btn-demarrer data-href=demarrer>Commencer la simulation</button>
 </template>
 
-<template id=origin>
+<template id=demarrer>
   <h1>Le vendeur expédie votre smartphone depuis un pays de l’Union européenne.</h1>
-  <button name=EU data-href=duty-free>Oui</button>
-  <button name=EU data-href=duty-20>Non</button>
-  <button name=EU data-href=duty-unknown class=unknown>Je ne sais pas</button>
+  <button name=btn-ue data-href=tva-zero>Oui</button>
+  <button name=btn-ue data-href=tva-20>Non</button>
+  <button name=btn-ue data-href=tva-inconnue class=unknown>Je ne sais pas</button>
 </template>
 
-<template id=about>
+<template id=a-propos>
   <h1>À propos du prototype</h1>
   <p>
     La direction générale des douanes et droits indirects propose un prototype dont la finalité est d’informer l’usager de France métropolitaine des taxes qu’il pourrait avoir à acquitter en cas d’achat à distance, notamment via des sites internet de ventes en ligne.
@@ -175,24 +175,24 @@
      Les montants des droits et taxes calculés peuvent être différents de ceux réellement acquittés. La consultation des textes légaux et réglementaires, qui sont les seuls à avoir force légale, demeure impérative.
   </p>
 
-  <button name=back data-href=warning>Revenir à la simulation</button>
+  <button name=btn-retour data-href=accueil>Revenir à la simulation</button>
 </template>
 
-<template id=duty-free data-last>
+<template id=tva-zero data-last>
   <h1>Pas de TVA et pas de droits de douane à payer.</h1>
   <p>
     La réception d'un <em>smartphone</em> acheté dans un pays de l'Union européenne est déjà soumise à la TVA (taux en vigueur dans le pays d'expédition) et n'est pas assujettie aux droits de douane.
   </p>
 </template>
 
-<template id=duty-20 data-last>
+<template id=tva-20 data-last>
   <h1>20% de TVA, pas de droits de douane.</h1>
   <p>
     La réception d'un <em>smartphone</em> acheté dans un pays non membre de l'Union européenne est soumise à une TVA de 20 % mais pas à des droits de douane.
   </p>
 </template>
 
-<template id=duty-unknown data-last>
+<template id=tva-inconnue data-last>
   <h1>0% ou 20% de TVA, pas de droits de douane.</h1>
   <p>
     La réception d'un smartphone acheté dans un pays de l'Union européenne est déjà soumise à la TVA (taux en vigueur dans le pays d'expédition) et n'est pas assujettie aux droits de douane.<br>
@@ -200,27 +200,27 @@
   </p>
 </template>
 
-<template id=end>
+<template id=fin>
   <h1>Fin de la simulation</h1>
   <p>
     Fin de la simulation.<br>
     Merci d'avoir utilisé le prototype.
   </p>
   <p>
-    <button name=startover data-href=warning>Recommencer</button>
+    <button name=btn-recommencer data-href=accueil>Recommencer</button>
   </p>
 </template>
 
 <template id=satisfaction>
   <p>Cette réponse vous est-elle utile ?</p>
-  <button name=satisfied data-href=end>Oui</button>
-  <button name=satisfied data-href=end>Non</button>
+  <button name=btn-satisfait data-href=fin>Oui</button>
+  <button name=btn-satisfait data-href=fin>Non</button>
 </template>
 
 <header>
   <img src=./images/logo.png>
   <h1><span>Calcul</span> des taxes et droits de douane</h1>
-  <a name=about data-href=about>À propos du prototype</a>
+  <a name=btn-a-propos data-href=a-propos>À propos du prototype</a>
 </header>
 
 <main id=container></main>
@@ -253,24 +253,27 @@
     if (withSatisfaction) {
       footer.innerHTML = document.querySelector('#satisfaction').innerHTML
       footer.classList.add('satisfaction')
-    }
-    else if(footer.classList.contains('satisfaction')) {
+    } else if (footer.classList.contains('satisfaction')) {
       footer.innerHTML = ''
       footer.classList.remove('satisfaction')
     }
-    document.dispatchEvent(new CustomEvent('showpage', { detail: page }))
+    var customEvent = document.createEvent('CustomEvent')
+    customEvent.initCustomEvent('showpage', true, true, { detail: page })
+    document.dispatchEvent(customEvent)
     initListerners(document.body)
   }
 
   function initListerners (element) {
     ;[].forEach.call(element.querySelectorAll('[data-href]'), function (button) {
       button.addEventListener('click', function (event) {
-        document.dispatchEvent(new CustomEvent('buttonclick', { detail: button }))
+        var customEvent = document.createEvent('CustomEvent')
+        customEvent.initCustomEvent('buttonclick', true, true, { detail: button })
+        document.dispatchEvent(customEvent)
         showPage(button.getAttribute('data-href'))
       })
     })
   }
 
-  showPage('warning')
+  showPage('accueil')
 </script>
 </html>
