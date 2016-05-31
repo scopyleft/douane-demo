@@ -132,14 +132,14 @@
       En poursuivant votre navigation sur ce site, vous acceptez l’utilisation de cookies nous permettant de suivre votre navigation ainsi que de réaliser des statistiques de visites.
     </p>
   </aside>
-  <button data-href=origin>Commencer la simulation</button>
+  <button name=start data-href=origin>Commencer la simulation</button>
 </template>
 
 <template id=origin>
   <h1>Le vendeur expédie votre smartphone depuis un pays de l’Union européenne.</h1>
-  <button data-href=duty-free>Oui</button>
-  <button data-href=duty-20>Non</button>
-  <button data-href=duty-unknown class=unknown>Je ne sais pas</button>
+  <button name=EU data-href=duty-free>Oui</button>
+  <button name=EU data-href=duty-20>Non</button>
+  <button name=EU data-href=duty-unknown class=unknown>Je ne sais pas</button>
 </template>
 
 <template id=about>
@@ -155,7 +155,7 @@
      Les montants des droits et taxes calculés peuvent être différents de ceux réellement acquittés. La consultation des textes légaux et réglementaires, qui sont les seuls à avoir force légale, demeure impérative.
   </p>
 
-  <button data-href=warning>Revenir à la simulation</button>
+  <button name=back data-href=warning>Revenir à la simulation</button>
 </template>
 
 <template id=duty-free data-last>
@@ -186,24 +186,39 @@ L’envoi d’un <em>smartphone</em> depuis l’Union européenne est déjà sou
     Merci de votre retour.
   </p>
   <p>
-    <button data-href=warning>Recommencer</button>
+    <button name=startover data-href=warning>Recommencer</button>
   </p>
 </template>
 
 <template id=satisfaction>
   <p>Cette réponse vous est-elle utile ?</p>
-  <button data-href=end>Oui</button>
-  <button data-href=end>Non</button>
+  <button name=satisfied data-href=end>Oui</button>
+  <button name=satisfied data-href=end>Non</button>
 </template>
 
 <header>
   <img src=./images/logo.png>
   <h1><span>Calcul</span> des droits et taxes</h1>
-  <a data-href=about>À propos du prototype</a>
+  <a name=about data-href=about>À propos du prototype</a>
 </header>
 
 <main id=container></main>
 <footer></footer>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=0;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-45069184-4', 'auto');
+  ga('send', 'pageview');
+  document.addEventListener('showpage', function (event) {
+    ga('send', 'event', 'calculator', 'display', event.detail)
+  })
+  document.addEventListener('buttonclick', function (event) {
+    var button = event.detail
+    ga('send', 'event', 'calculator', 'click',
+       button.name + ' : '+ button.innerText)
+  })
+</script>
 
 <script>
   var container = document.querySelector('#container')
@@ -222,17 +237,19 @@ L’envoi d’un <em>smartphone</em> depuis l’Union européenne est déjà sou
       footer.innerHTML = ''
       footer.classList.remove('satisfaction')
     }
+    document.dispatchEvent(new CustomEvent('showpage', { detail: page }))
     initListerners(document.body)
   }
 
   function initListerners (element) {
     ;[].forEach.call(element.querySelectorAll('[data-href]'), function (button) {
       button.addEventListener('click', function (event) {
+        document.dispatchEvent(new CustomEvent('buttonclick', { detail: button }))
         showPage(button.getAttribute('data-href'))
       })
     })
   }
-
+  
   showPage('warning')
 </script>
 </html>
