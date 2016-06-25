@@ -231,7 +231,8 @@
   ga('create', 'UA-45069184-4', 'auto');
   ga('send', 'pageview');
   document.addEventListener('showpage', function (event) {
-    ga('send', 'event', 'calculator', 'display', event.detail)
+    ga('set', 'page', '/' + event.detail);
+    ga('send', 'pageview');
   })
   document.addEventListener('buttonclick', function (event) {
     var button = event.detail
