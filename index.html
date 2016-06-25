@@ -152,13 +152,21 @@
       En poursuivant votre navigation sur ce site, vous acceptez l’utilisation de cookies nous permettant de suivre votre navigation ainsi que de réaliser des statistiques de visites.
     </p>
   </aside>
-  <button name=btn-demarrer data-href=demarrer>Commencer la simulation</button>
+  <button name=btn-demarrer data-href=montant>Commencer la simulation</button>
 </template>
 
-<template id=demarrer>
+<template id=montant>
+  <h1>Quel est le prix d'achat du <em>smartphone</em>, en Euros ?</h1>
+  <form onsubmit=submitAmount(this)>
+    <input type=integer name=amount value=100>
+    <button type=submit name=btn-montant data-href=ue>Continuer</button>
+  </form>
+</template>
+
+<template id=ue>
   <h1>Le vendeur expédie votre smartphone depuis un pays de l’Union européenne.</h1>
-  <button name=btn-ue data-href=tva-zero>Oui</button>
-  <button name=btn-ue data-href=tva-20>Non</button>
+  <button name=btn-ue onclick=calculator.addTva(0) data-href=tva-zero>Oui</button>
+  <button name=btn-ue onclick=calculator.addTva(20) data-href=tva-20>Non</button>
   <button name=btn-ue data-href=tva-inconnue class=unknown>Je ne sais pas</button>
 </template>
 
@@ -183,12 +191,18 @@
   <p>
     La réception d'un <em>smartphone</em> acheté dans un pays de l'Union européenne est déjà soumise à la TVA (taux en vigueur dans le pays d'expédition) et n'est pas assujettie aux droits de douane.
   </p>
+  <p>
+    L'achat de ce <em>smartphone</em> vous coutera donc <strong>{calculator.total} Euros</strong> au total.
+  </p>
 </template>
 
 <template id=tva-20 data-last>
   <h1>20% de TVA, pas de droits de douane.</h1>
   <p>
     La réception d'un <em>smartphone</em> acheté dans un pays non membre de l'Union européenne est soumise à une TVA de 20 % mais pas à des droits de douane.
+  </p>
+  <p>
+    L'achat de ce <em>smartphone</em> vous coutera donc <strong>{calculator.total} Euros</strong> au total.
   </p>
 </template>
 
@@ -241,12 +255,32 @@
 </script>
 
 <script>
+  var calculator = {
+    init: function() {
+      this.amount = 0
+      this.total = 0
+    },
+
+    addTva: function(percentage) {
+      this.total = this.amount * (1 + (percentage / 100))
+    }
+  };
+
   var container = document.querySelector('#container')
   var footer = document.querySelector('footer')
 
+  // Replaces {variables} by variables values.
+  function templatize(html) {
+    return html.replace(/({.*})/g, function (match) {
+      return eval(match)
+    })
+  }
+
   function showPage (page) {
     var source = document.querySelector('#' + page)
-    container.innerHTML = source.innerHTML
+    var content = source.innerHTML
+    content = templatize(content)
+    container.innerHTML = content
     container.setAttribute('data-page', page)
     var withSatisfaction = source.hasAttribute('data-last')
     if (withSatisfaction) {
@@ -273,6 +307,11 @@
     })
   }
 
+  function submitAmount(form) {
+    calculator.amount = parseInt(form.querySelector('[name=amount]').value, 10)
+  }
+
+  calculator.init()
   showPage('accueil')
 </script>
 </html>
