@@ -19,3 +19,17 @@ Le projet utilise Google Analytics pour tracer le comportement utilisateurs.
 
 > Lorsque le serveur tourne sur un serveur _localhost_, aucun tracking n'est
 activé.
+
+
+## Déploiement
+
+Le projet est hébergé sur [Github Pages](https://pages.github.com).
+
+La version de demo est hébergée sur https://github.com/scopyleft/douane-demo.
+Le domaine est http://demo.droits-et-taxes.fr.
+
+Pour accéder au déploiement en demo, on ajoutera le _remote_ "demo" :
+`git remote add demo git@github.com:scopyleft/douane-demo.git`
+
+- Pour déployer en production : `git push origin master`
+- Pour déployer en demo : `git push demo dev:gh-pages`
