@@ -152,22 +152,22 @@
       En poursuivant votre navigation sur ce site, vous acceptez l’utilisation de cookies nous permettant de suivre votre navigation ainsi que de réaliser des statistiques de visites.
     </p>
   </aside>
-  <button name=btn-demarrer data-href=montant>Commencer la simulation</button>
+  <button name=demarrer value=simulation data-href=montant>Commencer la simulation</button>
 </template>
 
 <template id=montant>
   <h1>Quel est le prix d'achat du <em>smartphone</em>, en Euros ?</h1>
   <form onsubmit=submitAmount(this)>
     <input type=integer name=amount value=100>
-    <button type=submit name=btn-montant data-href=ue>Continuer</button>
+    <button type=submit name=montant value=continuer data-href=ue>Continuer</button>
   </form>
 </template>
 
 <template id=ue>
   <h1>Le vendeur expédie votre smartphone depuis un pays de l’Union européenne.</h1>
-  <button name=btn-ue onclick=calculator.addTva(0) data-href=tva-zero>Oui</button>
-  <button name=btn-ue onclick=calculator.addTva(20) data-href=tva-20>Non</button>
-  <button name=btn-ue data-href=tva-inconnue class=unknown>Je ne sais pas</button>
+  <button name=ue value=oui onclick=calculator.addTva(0) data-href=tva-zero>Oui</button>
+  <button name=ue value=non onclick=calculator.addTva(20) data-href=tva-20>Non</button>
+  <button name=ue value=nsp data-href=tva-inconnue class=unknown>Je ne sais pas</button>
 </template>
 
 <template id=a-propos>
@@ -183,7 +183,7 @@
      Les montants des droits et taxes calculés peuvent être différents de ceux réellement acquittés. La consultation des textes légaux et réglementaires, qui sont les seuls à avoir force légale, demeure impérative.
   </p>
 
-  <button name=btn-retour data-href=accueil>Revenir à la simulation</button>
+  <button name=retour value=simulation data-href=accueil>Revenir à la simulation</button>
 </template>
 
 <template id=tva-zero data-last>
@@ -220,20 +220,20 @@
     Merci d'avoir utilisé le prototype.
   </p>
   <p>
-    <button name=btn-recommencer data-href=accueil>Recommencer</button>
+    <button name=recommencer value=debut data-href=accueil onclick=restart()>Recommencer</button>
   </p>
 </template>
 
 <template id=satisfaction>
   <p>Cette réponse vous est-elle utile ?</p>
-  <button name=btn-satisfait data-href=fin>Oui</button>
-  <button name=btn-satisfait data-href=fin>Non</button>
+  <button name=satisfait value=oui data-href=fin>Oui</button>
+  <button name=satisfait value=non data-href=fin>Non</button>
 </template>
 
 <header>
   <img src=./images/logo.png>
   <h1><span>Calcul</span> des taxes et droits de douane</h1>
-  <a name=btn-a-propos data-href=a-propos>À propos du prototype</a>
+  <a name=a-propos value=prototype data-href=a-propos>À propos du prototype</a>
 </header>
 
 <main id=container></main>
@@ -250,16 +250,30 @@
   ga('create', gcode, 'auto');
   ga('send', 'pageview');
   document.addEventListener('showpage', function (event) {
-    ga('send', 'event', 'calculator', 'display', event.detail)
+    ga('set', 'page', '/' + event.detail)
+    ga('send', 'pageview')
   })
   document.addEventListener('buttonclick', function (event) {
     var button = event.detail
-    ga('send', 'event', 'calculator', 'click',
-       button.name + ' : '+ button.innerText)
+    var buttonValue = button.value || button.innerText
+
+    var trackingCode = templatize('{round}/{breadcrumb}/{action}:{value}', {
+      round: round,
+      breadcrumb: breadcrumb.join(','),
+      action: button.name,
+      value: buttonValue
+    })
+    ga('send', 'event', 'calculator', 'click', templatize(trackingCode))
+
+    breadcrumb.push(button.name + '=' + buttonValue)
   })
 </script>
 
 <script>
+  var round = 1
+
+  var breadcrumb = []
+
   var calculator = {
     init: function() {
       this.amount = 0
@@ -275,9 +289,10 @@
   var footer = document.querySelector('footer')
 
   // Replaces {variables} by variables values.
-  function templatize(html) {
-    return html.replace(/({.*})/g, function (match) {
-      return eval(match)
+  function templatize(str, context) {
+    return str.replace(/{[\w.]*}/g, function (match) {
+      var varName = match.substr(1, match.length - 2)
+      return context ? context[varName] : eval(varName)
     })
   }
 
@@ -314,6 +329,12 @@
 
   function submitAmount(form) {
     calculator.amount = parseInt(form.querySelector('[name=amount]').value, 10)
+  }
+
+  function restart() {
+    round++
+    calculator.init()
+    breadcrumb = []
   }
 
   calculator.init()
