@@ -77,7 +77,8 @@
   main h2 {
     font-size: 1.3em;
   }
-  button, main a {
+  button,
+  main a {
     font-size: 1em;
     padding: 20px 70px;
     background-color: #0275d8;
@@ -133,9 +134,14 @@
   }
 
   @media (max-width: 640px) {
-    button {
+    button,
+    main a {
       width: 90%;
       margin-bottom: .5em;
+      padding: 20px;
+    }
+    main a {
+      display: block;
     }
     footer button:first-of-type {
       margin-left: 0;
@@ -212,7 +218,7 @@
   </p>
   <p>
     <button name=btn-recommencer data-href=accueil>Recommencer</button>
-    <a name=btn-retourner href="http://www.douane.gouv.fr/articles/a10753-achats-a-distance-et-envois-entre-particuliers#DouaneDT">Retourner sur douanes.gouv.fr</a>
+    <a name=btn-retourner href="http://www.douane.gouv.fr/articles/a10753-achats-a-distance-et-envois-entre-particuliers#DouaneDT">Retourner sur douanes.gouv.fr</a>
   </p>
 </template>
 
