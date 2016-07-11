@@ -157,7 +157,7 @@
 
 <template id=montant>
   <h1>Quel est le prix d'achat du <em>smartphone</em>, en Euros ?</h1>
-  <form onsubmit=submitAmount(this)>
+  <form>
     <input type=integer name=amount value=100>
     <button type=submit name=montant value=continuer data-href=ue>Continuer</button>
   </form>
@@ -325,10 +325,14 @@
         showPage(button.getAttribute('data-href'))
       })
     })
-  }
 
-  function submitAmount(form) {
-    calculator.amount = parseInt(form.querySelector('[name=amount]').value, 10)
+    var form = element.querySelector('form')
+    if (!form) return
+    form.addEventListener('submit', function (event) {
+      event.preventDefault()
+      var form = event.target
+      calculator.amount = parseInt(form.querySelector('[name=amount]').value, 10)
+    })
   }
 
   function restart() {

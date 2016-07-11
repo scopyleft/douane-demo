@@ -28,10 +28,6 @@ Le projet est hébergé sur [Github Pages](https://pages.github.com).
 La version de demo est hébergée sur https://github.com/scopyleft/douane-demo.
 Le domaine est http://demo.droits-et-taxes.fr.
 
-La branche _dev_ du [dépot principal](https://github.com/scopyleft/douane)
-sera dupliquée comme _gh-pages_ sur le [dépot de demo](https://github.com/scopyleft/douane-demo).
-Ceci afin d'utiliser un domaine différent hebergé par Github Pages.
-
 Pour accéder au déploiement en demo, on ajoutera le _remote_ "demo" :
 `git remote add demo git@github.com:scopyleft/douane-demo.git`
 
