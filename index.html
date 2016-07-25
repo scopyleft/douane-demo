@@ -253,15 +253,15 @@
 <footer></footer>
 
 <script>
-  var url = document.location.href;
-  var gcode = '';
+  var url = document.location.href
+  var gcode = ''
   if (url.search('droits-et-taxes') >= 0) {
     gcode = url.search('demo') < 0 ? 'UA-45069184-4' : 'UA-79921412-1';
   }
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=0;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-  ga('create', gcode, 'auto');
-  ga('send', 'pageview');
+  ga('create', gcode, 'auto')
+  ga('send', 'pageview')
   document.addEventListener('showpage', function (event) {
     ga('set', 'page', '/' + event.detail)
     ga('send', 'pageview')
@@ -284,29 +284,27 @@
 
     breadcrumb.push(button.name + '=' + buttonValue)
   })
-</script>
 
-<script>
   var round = 1
 
   var breadcrumb = []
 
   var calculator = {
-    init: function() {
+    init: function () {
       this.amount = 0
       this.total = 0
     },
 
-    addTva: function(percentage) {
+    addTva: function (percentage) {
       this.total = this.amount * (1 + (percentage / 100))
     }
-  };
+  }
 
   var container = document.querySelector('#container')
   var footer = document.querySelector('footer')
 
   // Replaces {variables} by variables values.
-  function templatize(str, context) {
+  function templatize (str, context) {
     return str.replace(/{[\w.]*}/g, function (match) {
       var varName = match.substr(1, match.length - 2)
       return context ? context[varName] : eval(varName)
@@ -330,22 +328,24 @@
 
     var customClickEvent = document.createEvent('CustomEvent')
     ;[].forEach.call(container.querySelectorAll('a.button'), function (button) {
-      customClickEvent.initCustomEvent('buttonclick', true, true, button)
-      document.dispatchEvent(customClickEvent)
+      button.addEventListener('click', function (event) {
+        customClickEvent.initCustomEvent('buttonclick', true, true, button)
+        document.dispatchEvent(customClickEvent)
+      })
     })
     var customPageEvent = document.createEvent('CustomEvent')
     customPageEvent.initCustomEvent('showpage', true, true, page)
     document.dispatchEvent(customPageEvent)
   }
 
-  function submitAmount(event) {
+  function submitAmount (event) {
     event.preventDefault()
     var form = event.target
     calculator.amount = parseInt(form.querySelector('[name=amount]').value, 10)
     document.location.href = form.attributes['action'].value
   }
 
-  function restart() {
+  function restart () {
     round++
     calculator.init()
     breadcrumb = []
@@ -355,7 +355,7 @@
   var hash = document.location.hash
   showPage(hash ? hash.slice(1) : 'accueil')
 
-  window.addEventListener('hashchange', function(event) {
+  window.addEventListener('hashchange', function (event) {
     var hash = document.location.hash && document.location.hash.slice(1)
     hash && showPage(hash)
   })
