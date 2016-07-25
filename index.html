@@ -314,6 +314,7 @@
     var customClickEvent = document.createEvent('CustomEvent')
     ;[].forEach.call(document.querySelectorAll('a.button,button'), function (button) {
       button.addEventListener('click', function (event) {
+        event.preventDefault()
         customClickEvent.initCustomEvent('buttonclick', true, true, button)
         document.dispatchEvent(customClickEvent)
       })
@@ -328,12 +329,12 @@
     breadcrumb = []
   }
 
-  var hash = document.location.hash
-  showPage(hash ? hash.slice(1) : 'accueil')
+  showPage('accueil')
 
-  window.addEventListener('hashchange', function (event) {
-    var hash = document.location.hash && document.location.hash.slice(1)
-    hash && showPage(hash)
+  document.addEventListener('buttonclick', function (event) {
+    var button = event.detail
+    var page = button.attributes.href.value.slice(1)
+    page && showPage(page)
   })
 </script>
 </html>
