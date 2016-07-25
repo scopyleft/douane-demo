@@ -189,11 +189,16 @@
   <button name=btn-retour data-href=accueil>Revenir à la simulation</button>
 </template>
 
-<template id=tva-zero data-last>
+<template id=tva-zero data-last data-testing='a'>
   <h1>Pas de TVA et pas de droits de douane à payer.</h1>
   <p>
     La réception d'un <em>smartphone</em> acheté dans un pays de l'Union européenne est déjà soumise à la TVA (taux en vigueur dans le pays d'expédition) et n'est pas assujettie aux droits de douane.
   </p>
+</template>
+
+<template id=tva-zero data-last data-testing='b'>
+  <h1>Aucune TVA ni autres frais!</h1>
+  <p>A partir de l'Europe, tout est déjà inclus !</p>
 </template>
 
 <template id=tva-20 data-last>
@@ -255,9 +260,11 @@
 <script>
   var container = document.querySelector('#container')
   var footer = document.querySelector('footer')
+  var ab_version = String(Math.random())[4] < 5 ? 'a' : 'b'
 
   function showPage (page) {
-    var source = document.querySelector('#' + page)
+    var source = document.querySelector('#' + page + '[data-testing='+ab_version+']')
+                 || document.querySelector('#' + page)
     container.innerHTML = source.innerHTML
     container.setAttribute('data-page', page)
     var withSatisfaction = source.hasAttribute('data-last')
