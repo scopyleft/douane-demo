@@ -329,7 +329,7 @@
     }
 
     var customClickEvent = document.createEvent('CustomEvent')
-    ;[].forEach.call(container.querySelectorAll('a.button'), function (button) {
+    ;[].forEach.call(container.querySelectorAll('a.button,button'), function (button) {
       button.addEventListener('click', function (event) {
         customClickEvent.initCustomEvent('buttonclick', true, true, button)
         document.dispatchEvent(customClickEvent)
