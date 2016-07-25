@@ -327,11 +327,6 @@
     document.dispatchEvent(customEvent)
   }
 
-  window.addEventListener('hashchange', function(event) {
-    var hash = document.location.hash && document.location.hash.slice(1)
-    hash && showPage(hash)
-  })
-
   function submitAmount(event) {
     event.preventDefault()
     var form = event.target
@@ -348,5 +343,10 @@
 
   var hash = document.location.hash
   showPage(hash ? hash.slice(1) : 'accueil')
+  
+  window.addEventListener('hashchange', function(event) {
+    var hash = document.location.hash && document.location.hash.slice(1)
+    hash && showPage(hash)
+  })
 </script>
 </html>
