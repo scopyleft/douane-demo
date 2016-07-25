@@ -174,21 +174,13 @@
       En poursuivant votre navigation sur ce site, vous acceptez l’utilisation de cookies nous permettant de suivre votre navigation ainsi que de réaliser des statistiques de visites.
     </p>
   </aside>
-  <a name=demarrer value=simulation href=#montant class=button onclick=start()>Commencer la simulation</a>
-</template>
-
-<template id=montant>
-  <h1>Quel est le prix d'achat du <em>smartphone</em>, en Euros ?</h1>
-  <form method=post onsubmit=submitAmount(event) action=#ue>
-    <input type=integer name=amount value=100>
-    <button type=submit name=montant value=continuer>Continuer</button>
-  </form>
+  <a name=demarrer value=simulation href=#ue class=button onclick=start()>Commencer la simulation</a>
 </template>
 
 <template id=ue>
   <h1>Le vendeur expédie votre smartphone depuis un pays de l’Union européenne.</h1>
-  <a class=button name=ue value=oui onclick=calculator.addTva(0) href=#tva-zero data-tracking>Oui</a>
-  <a class=button name=ue value=non onclick=calculator.addTva(20) href=#tva-20 data-tracking>Non</a>
+  <a class=button name=ue value=oui href=#tva-zero data-tracking>Oui</a>
+  <a class=button name=ue value=non href=#tva-20 data-tracking>Non</a>
   <a class="button unknown" name=ue value=nsp href=#tva-inconnue data-tracking>Je ne sais pas</a>
 </template>
 
@@ -213,18 +205,12 @@
   <p>
     La réception d'un <em>smartphone</em> acheté dans un pays de l'Union européenne est déjà soumise à la TVA (taux en vigueur dans le pays d'expédition) et n'est pas assujettie aux droits de douane.
   </p>
-  <p>
-    L'achat de ce <em>smartphone</em> vous coutera donc <strong>{calculator.total} Euros</strong> au total.
-  </p>
 </template>
 
 <template id=tva-20 data-last>
   <h1>20% de TVA, pas de droits de douane.</h1>
   <p>
     La réception d'un <em>smartphone</em> acheté dans un pays non membre de l'Union européenne est soumise à une TVA de 20 % mais pas à des droits de douane.
-  </p>
-  <p>
-    L'achat de ce <em>smartphone</em> vous coutera donc <strong>{calculator.total} Euros</strong> au total.
   </p>
 </template>
 
@@ -243,7 +229,7 @@
   </p>
   <p>
     <a class=button name=recommencer value=debut href=#accueil>Recommencer</a>
-    <a name=btn-retourner href="http://www.douane.gouv.fr/articles/a10753-achats-a-distance-et-envois-entre-particuliers#DouaneDT">Retourner sur douanes.gouv.fr</a>
+    <a class=button name=retourner href="http://www.douane.gouv.fr/articles/a10753-achats-a-distance-et-envois-entre-particuliers#DouaneDT">Retourner sur douanes.gouv.fr</a>
   </p>
 </template>
 
@@ -299,18 +285,6 @@
 
   var round = 0
   var breadcrumb = []
-
-  var calculator = {
-    init: function () {
-      this.amount = 0
-      this.total = 0
-    },
-
-    addTva: function (percentage) {
-      this.total = this.amount * (1 + (percentage / 100))
-    }
-  }
-
   var container = document.querySelector('#container')
   var footer = document.querySelector('footer')
 
@@ -349,16 +323,8 @@
     document.dispatchEvent(customPageEvent)
   }
 
-  function submitAmount (event) {
-    event.preventDefault()
-    var form = event.target
-    calculator.amount = parseInt(form.querySelector('[name=amount]').value, 10)
-    document.location.href = form.attributes['action'].value
-  }
-
   function start () {
     round++
-    calculator.init()
     breadcrumb = []
   }
 
