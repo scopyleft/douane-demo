@@ -178,9 +178,9 @@
 
 <template id=ue>
   <h1>Le vendeur expédie votre smartphone depuis un pays de l’Union européenne.</h1>
-  <a class=button name=ue value=oui onclick=calculator.addTva(0) href=#tva-zero>Oui</a>
-  <a class=button name=ue value=non onclick=calculator.addTva(20) href=#tva-20>Non</a>
-  <a class="button unknown" name=ue value=nsp href=#tva-inconnue>Je ne sais pas</a>
+  <a class=button name=ue value=oui onclick=calculator.addTva(0) href=#tva-zero data-tracking>Oui</a>
+  <a class=button name=ue value=non onclick=calculator.addTva(20) href=#tva-20 data-tracking>Non</a>
+  <a class="button unknown" name=ue value=nsp href=#tva-inconnue data-tracking>Je ne sais pas</a>
 </template>
 
 <template id=a-propos>
@@ -199,7 +199,7 @@
   <a class=button name=retour value=simulation href=#accueil>Revenir à la simulation</a>
 </template>
 
-<template id=tva-zero data-last data-history=true>
+<template id=tva-zero data-last>
   <h1>Pas de TVA et pas de droits de douane à payer.</h1>
   <p>
     La réception d'un <em>smartphone</em> acheté dans un pays de l'Union européenne est déjà soumise à la TVA (taux en vigueur dans le pays d'expédition) et n'est pas assujettie aux droits de douane.
@@ -209,7 +209,7 @@
   </p>
 </template>
 
-<template id=tva-20 data-last data-history=true>
+<template id=tva-20 data-last>
   <h1>20% de TVA, pas de droits de douane.</h1>
   <p>
     La réception d'un <em>smartphone</em> acheté dans un pays non membre de l'Union européenne est soumise à une TVA de 20 % mais pas à des droits de douane.
@@ -219,7 +219,7 @@
   </p>
 </template>
 
-<template id=tva-inconnue data-last data-history=true>
+<template id=tva-inconnue data-last>
   <h1>0% ou 20% de TVA, pas de droits de douane.</h1>
   <p>
     La réception d'un smartphone acheté dans un pays de l'Union européenne est déjà soumise à la TVA (taux en vigueur dans le pays d'expédition) et n'est pas assujettie aux droits de douane.<br>
@@ -227,7 +227,7 @@
   </p>
 </template>
 
-<template id=fin data-history=true>
+<template id=fin>
   <h1>Fin de la simulation</h1>
   <p>
     Merci d'avoir utilisé le prototype.
@@ -239,8 +239,8 @@
 
 <template id=satisfaction>
   <p>Cette réponse vous est-elle utile ?</p>
-  <a class=button name=satisfait value=oui href=#fin>Oui</a>
-  <a class=button name=satisfait value=non href=#fin>Non</a>
+  <a class=button name=satisfait value=oui href=#fin data-tracking>Oui</a>
+  <a class=button name=satisfait value=non href=#fin data-tracking>Non</a>
 </template>
 
 <header>
@@ -279,11 +279,12 @@
     var trackingCode = templatize('{round}/{breadcrumb}/{action}:{value}', context)
     ga('send', 'event', 'calculator', 'click', trackingCode)
     if (!gcode && context) {
-      console.table(context)
+      console.debug(context)
       console.info('Value sent to GA:', trackingCode)
     }
-
-    breadcrumb.push(button.name + '=' + buttonValue)
+    if ('tracking' in button.dataset) {
+      breadcrumb.push(button.name + '=' + buttonValue)
+    }
   })
 
   var round = 0
