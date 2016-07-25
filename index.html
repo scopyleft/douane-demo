@@ -82,6 +82,7 @@
   }
   button,
   a.button {
+    display: inline-block;
     font-size: 1em;
     padding: 20px 70px;
     background-color: #0275d8;
@@ -198,7 +199,7 @@
   <a class=button name=retour value=simulation href=#accueil>Revenir à la simulation</a>
 </template>
 
-<template id=tva-zero data-last>
+<template id=tva-zero data-last data-history=true>
   <h1>Pas de TVA et pas de droits de douane à payer.</h1>
   <p>
     La réception d'un <em>smartphone</em> acheté dans un pays de l'Union européenne est déjà soumise à la TVA (taux en vigueur dans le pays d'expédition) et n'est pas assujettie aux droits de douane.
@@ -208,7 +209,7 @@
   </p>
 </template>
 
-<template id=tva-20 data-last>
+<template id=tva-20 data-last data-history=true>
   <h1>20% de TVA, pas de droits de douane.</h1>
   <p>
     La réception d'un <em>smartphone</em> acheté dans un pays non membre de l'Union européenne est soumise à une TVA de 20 % mais pas à des droits de douane.
@@ -218,7 +219,7 @@
   </p>
 </template>
 
-<template id=tva-inconnue data-last>
+<template id=tva-inconnue data-last data-history=true>
   <h1>0% ou 20% de TVA, pas de droits de douane.</h1>
   <p>
     La réception d'un smartphone acheté dans un pays de l'Union européenne est déjà soumise à la TVA (taux en vigueur dans le pays d'expédition) et n'est pas assujettie aux droits de douane.<br>
@@ -226,7 +227,7 @@
   </p>
 </template>
 
-<template id=fin>
+<template id=fin data-history=true>
   <h1>Fin de la simulation</h1>
   <p>
     Merci d'avoir utilisé le prototype.
@@ -254,7 +255,7 @@
 <script>
   var url = document.location.href;
   var gcode = '';
-  if (url.search('droits-et-taxes')) {
+  if (url.search('droits-et-taxes') >= 0) {
     gcode = url.search('demo') < 0 ? 'UA-45069184-4' : 'UA-79921412-1';
   }
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -275,7 +276,11 @@
       action: button.name,
       value: buttonValue
     })
-    ga('send', 'event', 'calculator', 'click', templatize(trackingCode))
+    var templatized = templatize(trackingCode)
+    if (!gcode) {
+      console.info('analytics', templatized)
+    }
+    ga('send', 'event', 'calculator', 'click', templatized)
 
     breadcrumb.push(button.name + '=' + buttonValue)
   })
@@ -322,9 +327,15 @@
       footer.innerHTML = ''
       footer.classList.remove('satisfaction')
     }
-    var customEvent = document.createEvent('CustomEvent')
-    customEvent.initCustomEvent('showpage', true, true, page)
-    document.dispatchEvent(customEvent)
+
+    var customClickEvent = document.createEvent('CustomEvent')
+    ;[].forEach.call(container.querySelectorAll('a.button'), function (button) {
+      customClickEvent.initCustomEvent('buttonclick', true, true, button)
+      document.dispatchEvent(customClickEvent)
+    })
+    var customPageEvent = document.createEvent('CustomEvent')
+    customPageEvent.initCustomEvent('showpage', true, true, page)
+    document.dispatchEvent(customPageEvent)
   }
 
   function submitAmount(event) {
@@ -343,7 +354,7 @@
 
   var hash = document.location.hash
   showPage(hash ? hash.slice(1) : 'accueil')
-  
+
   window.addEventListener('hashchange', function(event) {
     var hash = document.location.hash && document.location.hash.slice(1)
     hash && showPage(hash)
