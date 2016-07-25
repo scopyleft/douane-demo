@@ -165,14 +165,14 @@
       En poursuivant votre navigation sur ce site, vous acceptez l’utilisation de cookies nous permettant de suivre votre navigation ainsi que de réaliser des statistiques de visites.
     </p>
   </aside>
-  <a name=demarrer value=simulation href=#montant class=button>Commencer la simulation</a>
+  <a name=demarrer value=simulation href=#montant class=button onclick=start()>Commencer la simulation</a>
 </template>
 
 <template id=montant>
   <h1>Quel est le prix d'achat du <em>smartphone</em>, en Euros ?</h1>
   <form method=post onsubmit=submitAmount(event) action=#ue>
     <input type=integer name=amount value=100>
-    <button type=submit name=montant value=continuer href=#ue>Continuer</button>
+    <button type=submit name=montant value=continuer>Continuer</button>
   </form>
 </template>
 
@@ -233,7 +233,7 @@
     Merci d'avoir utilisé le prototype.
   </p>
   <p>
-    <a class=button name=recommencer value=debut href=#accueil onclick=restart()>Recommencer</a>
+    <a class=button name=recommencer value=debut href=#accueil>Recommencer</a>
   </p>
 </template>
 
@@ -270,20 +270,23 @@
   document.addEventListener('buttonclick', function (event) {
     var button = event.detail
     var buttonValue = button.value || button.innerText
-
-    var trackingCode = templatize('{round}/{breadcrumb}/{action}:{value}', {
+    var context = {
       round: round,
       breadcrumb: breadcrumb.join(','),
       action: button.name,
       value: buttonValue
-    })
+    }
+    var trackingCode = templatize('{round}/{breadcrumb}/{action}:{value}', context)
     ga('send', 'event', 'calculator', 'click', trackingCode)
+    if (!gcode && context) {
+      console.table(context)
+      console.info('Value sent to GA:', trackingCode)
+    }
 
     breadcrumb.push(button.name + '=' + buttonValue)
   })
 
-  var round = 1
-
+  var round = 0
   var breadcrumb = []
 
   var calculator = {
@@ -302,15 +305,10 @@
 
   // Replaces {variables} by variables values.
   function templatize (str, context) {
-    var result = str.replace(/{[\w.]*}/g, function (match) {
+    return str.replace(/{[\w.]*}/g, function (match) {
       var varName = match.substr(1, match.length - 2)
       return context ? context[varName] : eval(varName)
     })
-    if (!gcode && context) {
-      console.table(context)
-      console.info('Value sent to GA:', result)
-    }
-    return result
   }
 
   function showPage (page) {
@@ -347,11 +345,10 @@
     document.location.href = form.attributes['action'].value
   }
 
-  function restart () {
+  function start () {
     round++
     calculator.init()
     breadcrumb = []
-    document.location.hash = ''
   }
 
   var hash = document.location.hash
