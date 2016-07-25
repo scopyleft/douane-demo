@@ -77,7 +77,11 @@
   main h2 {
     font-size: 1.3em;
   }
-  button {
+  a.button {
+    text-decoration: none;
+  }
+  button,
+  a.button {
     font-size: 1em;
     padding: 20px 70px;
     background-color: #0275d8;
@@ -97,18 +101,23 @@
   }
 
   [data-page=amount] button,
-  [data-page=accueil] button {
-    display: block;
+  [data-page=accueil] button,
+  [data-page=amount] a.button,
+  [data-page=accueil] a.button {
+    display: inline-block;
     margin: 2em auto;
   }
-  [data-page=accueil] button {
+  [data-page=accueil] button,
+  [data-page=accueil] a.button {
     margin: 5em inherit;
   }
 
-  button.unknown {
+  button.unknown,
+  a.button.unknown {
     background-color: #ec971f;
   }
-  .satisfaction button {
+  .satisfaction button,
+  .satisfaction a.button {
     background-color: #5cb85c;
   }
 
@@ -119,7 +128,8 @@
   footer p {
     display: inline-block;
   }
-  footer button {
+  footer button,
+  footer a.button {
     display: inline-block;
     padding: 5px 20px;
   }
@@ -128,11 +138,13 @@
   }
 
   @media (max-width: 640px) {
-    button {
+    button,
+    a.button {
       width: 90%;
       margin-bottom: .5em;
     }
-    footer button:first-of-type {
+    footer button:first-of-type,
+    footer a.button:first-of-type {
       margin-left: 0;
     }
     aside {
@@ -152,22 +164,22 @@
       En poursuivant votre navigation sur ce site, vous acceptez l’utilisation de cookies nous permettant de suivre votre navigation ainsi que de réaliser des statistiques de visites.
     </p>
   </aside>
-  <button name=demarrer value=simulation data-href=montant>Commencer la simulation</button>
+  <a name=demarrer value=simulation href=#montant class=button>Commencer la simulation</a>
 </template>
 
 <template id=montant>
   <h1>Quel est le prix d'achat du <em>smartphone</em>, en Euros ?</h1>
-  <form>
+  <form method=post onsubmit=submitAmount(event) action=#ue>
     <input type=integer name=amount value=100>
-    <button type=submit name=montant value=continuer data-href=ue>Continuer</button>
+    <button type=submit name=montant value=continuer href=#ue>Continuer</button>
   </form>
 </template>
 
 <template id=ue>
   <h1>Le vendeur expédie votre smartphone depuis un pays de l’Union européenne.</h1>
-  <button name=ue value=oui onclick=calculator.addTva(0) data-href=tva-zero>Oui</button>
-  <button name=ue value=non onclick=calculator.addTva(20) data-href=tva-20>Non</button>
-  <button name=ue value=nsp data-href=tva-inconnue class=unknown>Je ne sais pas</button>
+  <a class=button name=ue value=oui onclick=calculator.addTva(0) href=#tva-zero>Oui</a>
+  <a class=button name=ue value=non onclick=calculator.addTva(20) href=#tva-20>Non</a>
+  <a class="button unknown" name=ue value=nsp href=#tva-inconnue>Je ne sais pas</a>
 </template>
 
 <template id=a-propos>
@@ -183,7 +195,7 @@
      Les montants des droits et taxes calculés peuvent être différents de ceux réellement acquittés. La consultation des textes légaux et réglementaires, qui sont les seuls à avoir force légale, demeure impérative.
   </p>
 
-  <button name=retour value=simulation data-href=accueil>Revenir à la simulation</button>
+  <a class=button name=retour value=simulation href=#accueil>Revenir à la simulation</a>
 </template>
 
 <template id=tva-zero data-last>
@@ -220,20 +232,20 @@
     Merci d'avoir utilisé le prototype.
   </p>
   <p>
-    <button name=recommencer value=debut data-href=accueil onclick=restart()>Recommencer</button>
+    <a class=button name=recommencer value=debut href=#accueil onclick=restart()>Recommencer</a>
   </p>
 </template>
 
 <template id=satisfaction>
   <p>Cette réponse vous est-elle utile ?</p>
-  <button name=satisfait value=oui data-href=fin>Oui</button>
-  <button name=satisfait value=non data-href=fin>Non</button>
+  <a class=button name=satisfait value=oui href=#fin>Oui</a>
+  <a class=button name=satisfait value=non href=#fin>Non</a>
 </template>
 
 <header>
   <img src=./images/logo.png>
   <h1><span>Calcul</span> des taxes et droits de douane</h1>
-  <a name=a-propos value=prototype data-href=a-propos>À propos du prototype</a>
+  <a name=a-propos value=prototype href=#a-propos>À propos du prototype</a>
 </header>
 
 <main id=container></main>
@@ -313,35 +325,28 @@
     var customEvent = document.createEvent('CustomEvent')
     customEvent.initCustomEvent('showpage', true, true, page)
     document.dispatchEvent(customEvent)
-    initListerners(document.body)
   }
 
-  function initListerners (element) {
-    ;[].forEach.call(element.querySelectorAll('[data-href]'), function (button) {
-      button.addEventListener('click', function (event) {
-        var customEvent = document.createEvent('CustomEvent')
-        customEvent.initCustomEvent('buttonclick', true, true, button)
-        document.dispatchEvent(customEvent)
-        showPage(button.getAttribute('data-href'))
-      })
-    })
+  window.addEventListener('hashchange', function(event) {
+    var hash = document.location.hash && document.location.hash.slice(1)
+    hash && showPage(hash)
+  })
 
-    var form = element.querySelector('form')
-    if (!form) return
-    form.addEventListener('submit', function (event) {
-      event.preventDefault()
-      var form = event.target
-      calculator.amount = parseInt(form.querySelector('[name=amount]').value, 10)
-    })
+  function submitAmount(event) {
+    event.preventDefault()
+    var form = event.target
+    calculator.amount = parseInt(form.querySelector('[name=amount]').value, 10)
+    document.location.href = form.attributes['action'].value
   }
 
   function restart() {
     round++
     calculator.init()
     breadcrumb = []
+    document.location.hash = ''
   }
 
-  calculator.init()
-  showPage('accueil')
+  var hash = document.location.hash
+  showPage(hash ? hash.slice(1) : 'accueil')
 </script>
 </html>
