@@ -260,7 +260,7 @@
 <script>
   var container = document.querySelector('#container')
   var footer = document.querySelector('footer')
-  var ab_version = String(Math.random())[4] < 5 ? 'a' : 'b'
+  var ab_version = String(Math.random())[4] % 2 ? 'a' : 'b'
 
   function showPage (page) {
     var source = document.querySelector('#' + page + '[data-testing='+ab_version+']')
