@@ -166,7 +166,7 @@
 <template id=accueil>
   <h1>Bienvenue sur le prototype de « Calcul des taxes et droits de douane » pour estimer le montant des droits à payer pour l’achat en ligne d’un smartphone.</h1>
 
-  <a name=demarrer value=simulation href=#ue class=button onclick=start()>Commencer la simulation</a>
+  <a name=demarrer value=simulation href=#montant class=button onclick=start()>Commencer la simulation</a>
 
   <aside>
     <h2>Avertissement</h2>
@@ -175,6 +175,15 @@
       En poursuivant votre navigation sur ce site, vous acceptez l’utilisation de cookies nous permettant de suivre votre navigation ainsi que de réaliser des statistiques de visites.
     </p>
   </aside>
+
+</template>
+
+<template id=montant>
+  <h1>Quel est le prix d'achat du <em>smartphone</em>, en Euros ?</h1>
+  <form method=post onsubmit=submitAmount(event) action=#ue>
+    <input type=integer name=amount value=100>
+    <button type=submit name=montant value=continuer>Continuer</button>
+  </form>
 </template>
 
 <template id=ue>
@@ -201,24 +210,36 @@
 </template>
 
 <template id=tva-zero data-last>
-  <h1>Pas de TVA et pas de droits de douane à payer.</h1>
+  <h1>
+    Votre achat vous coûtera {calculator.amount} Euros au total (TTC).
+  </h1>
   <p>
-    La réception d'un <em>smartphone</em> acheté dans un pays de l'Union européenne est déjà soumise à la TVA (taux en vigueur dans le pays d'expédition) et n'est pas assujettie aux droits de douane.
+    Cette réponse est valable pour l'achat d'un <em>smartphone</em>, acheté dans un pays de l'Union européenne, et dont le prix est <strong>{calculator.amount} Euros</strong> TTC.
+  </p>
+  <p>
+    La réception d'un <em>smartphone</em> acheté dans un pays de l'Union européenne est soumise à la TVA du pays d'expédition.<br>
+    À priori, cette taxe est déjà incluse dans le prix affiché par le vendeur.
   </p>
 </template>
 
 <template id=tva-20 data-last>
-  <h1>20% de TVA, pas de droits de douane.</h1>
+  <h1>Votre achat vous coûtera {calculator.total} Euros au total.</h1>
   <p>
-    La réception d'un <em>smartphone</em> acheté dans un pays non membre de l'Union européenne est soumise à une TVA de 20 % mais pas à des droits de douane.
+    Cette réponse est valable pour l'achat d'un <em>smartphone</em>, acheté hors Union européenne, et dont le prix affiché, livraison comprise, est de <strong>{calculator.total} Euros</strong> (Montant estimé hors frais éventuels de transport, d'assurance, de gestion du dossier parle transporteur, etc.)
+  </p>
+  <p>
+    La réception d'un <em>smartphone</em> acheté hors union européenne est soumise :
+    <ul>
+      <li>à la TVA (20%, sur le prix du produit, les frais d'assurance et de transport, et droit de douane),</li>
+      <li>à des droits de douane, qui dans le cas des smartphone sont de 0%.</li>
+    </ul>
   </p>
 </template>
 
 <template id=tva-inconnue data-last>
-  <h1>0% ou 20% de TVA, pas de droits de douane.</h1>
+  <h1>Votre achat vous coûtera entre {calculator.amount} et {calculator.total} Euros au total.</h1>
   <p>
-    La réception d'un smartphone acheté dans un pays de l'Union européenne est déjà soumise à la TVA (taux en vigueur dans le pays d'expédition) et n'est pas assujettie aux droits de douane.<br>
-    La réception d'un smartphone acheté dans un pays non membre de l'Union européenne est soumise à une TVA de 20 % mais pas à des droits de douane.
+    Cette réponse est valable pour l'achat d'un <em>smartphone</em> dont le prix affiché est de <strong>{calculator.amount} Euros</strong>.
   </p>
 </template>
 
@@ -285,6 +306,25 @@
 
   var round = 0
   var breadcrumb = []
+  var calculator = {
+    init: function () {
+      this._amount = 0
+      this.total = 0
+    },
+
+    get amount () {
+      return this._amount
+    },
+
+    set amount (value) {
+      this._amount = value
+      this.addTva(20)
+    },
+
+    addTva: function (percentage) {
+      this.total = this._amount * (1 + (percentage / 100))
+    }
+  }
   var container = document.querySelector('#container')
   var footer = document.querySelector('footer')
 
@@ -314,7 +354,6 @@
     var customClickEvent = document.createEvent('CustomEvent')
     ;[].forEach.call(document.querySelectorAll('a.button,button'), function (button) {
       button.addEventListener('click', function (event) {
-        event.preventDefault()
         customClickEvent.initCustomEvent('buttonclick', true, true, button)
         document.dispatchEvent(customClickEvent)
       })
@@ -324,17 +363,25 @@
     document.dispatchEvent(customPageEvent)
   }
 
+  function submitAmount (event) {
+    event.preventDefault()
+    var form = event.target
+    calculator.amount = parseInt(form.querySelector('[name=amount]').value, 10)
+    document.location.href = form.attributes['action'].value
+  }
+
   function start () {
     round++
+    calculator.init()
     breadcrumb = []
   }
 
-  showPage('accueil')
+  var hash = document.location.hash
+  showPage(hash ? hash.slice(1) : 'accueil')
 
-  document.addEventListener('buttonclick', function (event) {
-    var button = event.detail
-    var page = button.attributes.href.value.slice(1)
-    page && showPage(page)
+  window.addEventListener('hashchange', function (event) {
+    var hash = document.location.hash && document.location.hash.slice(1)
+    hash && showPage(hash)
   })
 </script>
 </html>
