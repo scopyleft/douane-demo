@@ -100,7 +100,6 @@
   aside {
     border: 1px solid #999;
     margin: 1em auto;
-    margin-top: 3em;
     padding: .5em .8em;
     width: 75%;
     min-width: 300px;
@@ -167,6 +166,8 @@
 <template id=accueil>
   <h1>Bienvenue sur le prototype de « Calcul des taxes et droits de douane » pour estimer le montant des droits à payer pour l’achat en ligne d’un smartphone.</h1>
 
+  <a name=demarrer value=simulation href=#ue class=button onclick=start()>Commencer la simulation</a>
+
   <aside>
     <h2>Avertissement</h2>
     <p>
@@ -174,7 +175,6 @@
       En poursuivant votre navigation sur ce site, vous acceptez l’utilisation de cookies nous permettant de suivre votre navigation ainsi que de réaliser des statistiques de visites.
     </p>
   </aside>
-  <a name=demarrer value=simulation href=#ue class=button onclick=start()>Commencer la simulation</a>
 </template>
 
 <template id=ue>
