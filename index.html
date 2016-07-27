@@ -249,12 +249,13 @@
 <footer></footer>
 
 <script>
-  var url = document.location.href
-  var gcode = ''
-  if (url.search('droits-et-taxes') >= 0) {
-    gcode = url.search('demo') < 0 ? 'UA-45069184-4' : 'UA-79921412-1'
+  var gcodes = {
+    'demo.droits-et-taxes.fr': 'UA-79921412-1',
+    'dev.droits-et-taxes.fr': '',
+    'droits-et-taxes.fr': 'UA-45069184-4'
   }
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), // eslint-disable-line
+  var gcode = gcodes[document.location.hostname] || ''
+  ;(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), // eslint-disable-line
   m=s.getElementsByTagName(o)[0];a.async=0;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga') // eslint-disable-line
   /* global ga */
   ga('create', gcode, 'auto')
