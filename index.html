@@ -126,6 +126,15 @@
     background-color: #5cb85c;
   }
 
+  .principes {
+    text-align: left;
+    font-style: italic;
+    font-size: .85em;
+    margin: auto 5%;
+    border: 1px dotted #666;
+    padding: 1% 5%;
+  }
+
   footer {
     text-align: center;
   }
@@ -199,7 +208,7 @@
     La direction générale des douanes et droits indirects propose un prototype dont la finalité est d’informer l’usager de France métropolitaine des taxes qu’il pourrait avoir à acquitter en cas d’achat à distance, notamment via des sites internet de ventes en ligne.
   </p>
   <p>
-    S'appuyant sur les taux de TVA à acquitter en France ainsi que sur le tarif douanier commun des pays de l'Union européenne (droits de douane), l'information restituée (taux, montants) n'a qu'un caractère indicatif.<br>
+    S'appuyant sur les taux de <abbr title="Taxe sur la Valeur Ajoutée">TVA</abbr> à acquitter en France ainsi que sur le tarif douanier commun des pays de l'Union européenne (droits de douane), l'information restituée (taux, montants) n'a qu'un caractère indicatif.<br>
     En particulier le prototype ne traite pas de l'ensemble des mesures du commerce extérieur et de la totalité des taxes pouvant être appliquées.
   </p>
   <p>
@@ -209,37 +218,68 @@
   <a class=button name=retour value=simulation href=#accueil>Revenir à la simulation</a>
 </template>
 
-<template id=tva-zero data-last>
+<template id=tva-zero data-testing=sans-principes data-last>
   <h1>
-    Votre achat vous coûtera {calculator.amount} Euros au total (TTC).
+    Votre achat vous coûtera {calculator.amount} Euros au total (<abbr title="Toutes Taxes Comprises">TTC</abbr>).
   </h1>
   <p>
-    Cette réponse est valable pour l'achat d'un <em>smartphone</em>, acheté dans un pays de l'Union européenne, et dont le prix est <strong>{calculator.amount} Euros</strong> TTC.
+    Cette réponse est valable pour l'achat d'un <em>smartphone</em>, acheté dans un pays de l'Union européenne, et dont le prix est <strong>{calculator.amount} Euros</strong> <abbr title="Toutes Taxes Comprises">TTC</abbr>.
   </p>
+</template>
+
+<template id=tva-zero data-testing=avec-principes data-last>
+  <h1>
+    Votre achat vous coûtera {calculator.amount} Euros au total (<abbr title="Toutes Taxes Comprises">TTC</abbr>).
+  </h1>
   <p>
-    La réception d'un <em>smartphone</em> acheté dans un pays de l'Union européenne est soumise à la TVA du pays d'expédition.<br>
+    Cette réponse est valable pour l'achat d'un <em>smartphone</em>, acheté dans un pays de l'Union européenne, et dont le prix est <strong>{calculator.amount} Euros</strong> <abbr title="Toutes Taxes Comprises">TTC</abbr>.
+  </p>
+  <p class=principes>
+    La réception d'un <em>smartphone</em> acheté dans un pays de l'Union européenne est soumise à la <abbr title="Taxe sur la Valeur Ajoutée">TVA</abbr> du pays d'expédition.<br>
     À priori, cette taxe est déjà incluse dans le prix affiché par le vendeur.
   </p>
 </template>
 
-<template id=tva-20 data-last>
+
+<template id=tva-20 data-testing=sans-principes data-last>
   <h1>Votre achat vous coûtera {calculator.total} Euros au total.</h1>
   <p>
     Cette réponse est valable pour l'achat d'un <em>smartphone</em>, acheté hors Union européenne, et dont le prix affiché, livraison comprise, est de <strong>{calculator.total} Euros</strong> (Montant estimé hors frais éventuels de transport, d'assurance, de gestion du dossier parle transporteur, etc.)
   </p>
-  <p>
-    La réception d'un <em>smartphone</em> acheté hors union européenne est soumise :
-    <ul>
-      <li>à la TVA (20%, sur le prix du produit, les frais d'assurance et de transport, et droit de douane),</li>
-      <li>à des droits de douane, qui dans le cas des smartphone sont de 0%.</li>
-    </ul>
-  </p>
 </template>
 
-<template id=tva-inconnue data-last>
+<template id=tva-20 data-testing=avec-principes data-last>
+  <h1>Votre achat vous coûtera {calculator.total} Euros au total.</h1>
+  <p>
+    Cette réponse est valable pour l'achat d'un <em>smartphone</em>, acheté hors Union européenne, et dont le prix affiché, livraison comprise, est de <strong>{calculator.total} Euros</strong> (Montant estimé hors frais éventuels de transport, d'assurance, de gestion du dossier parle transporteur, etc.)
+  </p>
+  <div class=principes>
+    <p>
+      La réception d'un <em>smartphone</em> acheté hors union européenne est soumise :
+    </p>
+    <ul>
+      <li>à la <abbr title="Taxe sur la Valeur Ajoutée">TVA</abbr> (20%, sur le prix du produit, les frais d'assurance et de transport, et droit de douane),</li>
+      <li>à des droits de douane, qui dans le cas des smartphone sont de 0%.</li>
+    </ul>
+  </div>
+</template>
+
+<template id=tva-inconnue data-testing=sans-principes data-last>
   <h1>Votre achat vous coûtera entre {calculator.amount} et {calculator.total} Euros au total.</h1>
   <p>
     Cette réponse est valable pour l'achat d'un <em>smartphone</em> dont le prix affiché est de <strong>{calculator.amount} Euros</strong>.
+  </p>
+</template>
+
+<template id=tva-inconnue data-testing=avec-principes data-last>
+  <h1>Votre achat vous coûtera entre {calculator.amount} et {calculator.total} Euros au total.</h1>
+  <p>
+    Cette réponse est valable pour l'achat d'un <em>smartphone</em> dont le prix affiché est de <strong>{calculator.amount} Euros</strong>.
+  </p>
+  <p class=principes>
+    Si vous achetez votre <em>smartphone</em> un pays de l'Union européenne,
+    le prix affiché est <abbr title="Toutes Taxes Comprises">TTC</abbr>.<br>
+    Sinon, il convient d'ajouter 20% de <abbr title="Taxe sur la Valeur Ajoutée">TVA</abbr> au prix affiché.
   </p>
 </template>
 
@@ -289,11 +329,12 @@
     var buttonValue = button.value || button.innerText
     var context = {
       round: round,
+      version: ab_version,
       breadcrumb: breadcrumb.join(','),
       action: button.name,
       value: buttonValue
     }
-    var trackingCode = templatize('{round}/{breadcrumb}/{action}:{value}', context)
+    var trackingCode = templatize('{version}/{round}/{breadcrumb}/{action}:{value}', context)
     ga('send', 'event', 'calculator', 'click', trackingCode)
     if (!gcode && context) {
       console.debug(context)
@@ -327,6 +368,8 @@
   }
   var container = document.querySelector('#container')
   var footer = document.querySelector('footer')
+  var ab_versions = ['sans-principes', 'avec-principes']
+  var ab_version = ab_versions[String(Math.random())[4] % 2 ? 0 : 1]
 
   // Replaces {variables} by variables values.
   function templatize (str, context) {
@@ -337,7 +380,8 @@
   }
 
   function showPage (page) {
-    var source = document.querySelector('#' + page)
+    var source = document.querySelector('#' + page + '[data-testing='+ab_version+']')
+               || document.querySelector('#' + page)
     var content = source.innerHTML
     content = templatize(content)
     container.innerHTML = content
