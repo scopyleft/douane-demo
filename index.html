@@ -312,7 +312,7 @@
     }
 
     var customClickEvent = document.createEvent('CustomEvent')
-    ;[].forEach.call(document.querySelectorAll('a.button,button'), function (button) {
+    ;[].forEach.call(document.querySelectorAll('a.button,button,header a'), function (button) {
       button.addEventListener('click', function (event) {
         event.preventDefault()
         customClickEvent.initCustomEvent('buttonclick', true, true, button)
@@ -332,9 +332,13 @@
   showPage('accueil')
 
   document.addEventListener('buttonclick', function (event) {
-    var button = event.detail
-    var page = button.attributes.href.value.slice(1)
-    page && showPage(page)
+    var link = event.detail.attributes.href.value
+    if (link.lastIndexOf('http', 0) === 0) {
+      document.location.href = link
+    } else {
+      var page = link.slice(1)
+      page && showPage(page)
+    }
   })
 </script>
 </html>
