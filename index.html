@@ -229,7 +229,7 @@
   </p>
   <p>
     <a class=button name=recommencer value=debut href=#accueil>Recommencer</a>
-    <a class=button name=retourner href="http://www.douane.gouv.fr/articles/a10753-achats-a-distance-et-envois-entre-particuliers#DouaneDT">Retourner sur douanes.gouv.fr</a>
+    <a class=button name=retourner href="http://www.douane.gouv.fr/articles/a10753-achats-a-distance-et-envois-entre-particuliers#DouaneDT">Retourner sur douane.gouv.fr</a>
   </p>
 </template>
 
@@ -249,12 +249,13 @@
 <footer></footer>
 
 <script>
-  var url = document.location.href
-  var gcode = ''
-  if (url.search('droits-et-taxes') >= 0) {
-    gcode = url.search('demo') < 0 ? 'UA-45069184-4' : 'UA-79921412-1'
+  var gcodes = {
+    'demo.droits-et-taxes.fr': 'UA-79921412-1',
+    'dev.droits-et-taxes.fr': '',
+    'droits-et-taxes.fr': 'UA-45069184-4'
   }
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), // eslint-disable-line
+  var gcode = gcodes[document.location.hostname] || ''
+  ;(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), // eslint-disable-line
   m=s.getElementsByTagName(o)[0];a.async=0;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga') // eslint-disable-line
   /* global ga */
   ga('create', gcode, 'auto')
@@ -312,7 +313,7 @@
     }
 
     var customClickEvent = document.createEvent('CustomEvent')
-    ;[].forEach.call(document.querySelectorAll('a.button,button'), function (button) {
+    ;[].forEach.call(document.querySelectorAll('a.button,button,header a'), function (button) {
       button.addEventListener('click', function (event) {
         event.preventDefault()
         customClickEvent.initCustomEvent('buttonclick', true, true, button)
@@ -332,9 +333,13 @@
   showPage('accueil')
 
   document.addEventListener('buttonclick', function (event) {
-    var button = event.detail
-    var page = button.attributes.href.value.slice(1)
-    page && showPage(page)
+    var link = event.detail.attributes.href.value
+    if (link.lastIndexOf('http', 0) === 0) {
+      document.location.href = link
+    } else {
+      var page = link.slice(1)
+      page && showPage(page)
+    }
   })
 </script>
 </html>
