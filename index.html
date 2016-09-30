@@ -218,16 +218,7 @@
   <a class=button name=retour value=simulation href=#accueil>Revenir à la simulation</a>
 </template>
 
-<template id=tva-zero data-testing=sans-principes data-last>
-  <h1>
-    Votre achat vous coûtera {calculator.amount} Euros au total (<abbr title="Toutes Taxes Comprises">TTC</abbr>).
-  </h1>
-  <p>
-    Cette réponse est valable pour l'achat d'un <em>smartphone</em>, acheté dans un pays de l'Union européenne, et dont le prix est <strong>{calculator.amount} Euros</strong> <abbr title="Toutes Taxes Comprises">TTC</abbr>.
-  </p>
-</template>
-
-<template id=tva-zero data-testing=avec-principes data-last>
+<template id=tva-zero data-last>
   <h1>
     Votre achat vous coûtera {calculator.amount} Euros au total (<abbr title="Toutes Taxes Comprises">TTC</abbr>).
   </h1>
@@ -241,15 +232,7 @@
 </template>
 
 
-<template id=tva-20 data-testing=sans-principes data-last>
-  <h1>Votre achat vous coûtera {calculator.total} Euros au total.</h1>
-  <p>
-    Cette réponse est valable pour l'achat d'un <em>smartphone</em>, acheté hors Union européenne, et dont le prix affiché,
-    livraison comprise, est de <strong>{calculator.amount} Euros</strong>, et dans l'hypothèse où il n'y a pas de frais supplémentaires.
-  </p>
-</template>
-
-<template id=tva-20 data-testing=avec-principes data-last>
+<template id=tva-20 data-last>
   <h1>Votre achat vous coûtera {calculator.total} Euros au total.</h1>
   <p>
     Cette réponse est valable pour l'achat d'un <em>smartphone</em>, acheté hors Union européenne, et dont le prix affiché,
@@ -270,15 +253,7 @@
   </div>
 </template>
 
-<template id=tva-inconnue data-testing=sans-principes data-last>
-  <h1>Votre achat vous coûtera entre {calculator.amount} et {calculator.total} Euros au total.</h1>
-  <p>
-    Cette réponse est valable pour l'achat d'un <em>smartphone</em> dont le prix affiché est de <strong>{calculator.amount} Euros</strong>,
-    et dans l'hypothèse où il n'y a pas de frais supplémentaires.
-  </p>
-</template>
-
-<template id=tva-inconnue data-testing=avec-principes data-last>
+<template id=tva-inconnue data-last>
   <h1>Votre achat vous coûtera entre {calculator.amount} et {calculator.total} Euros au total.</h1>
   <p>
     Cette réponse est valable pour l'achat d'un <em>smartphone</em> dont le prix affiché est de <strong>{calculator.amount} Euros</strong>,
@@ -340,12 +315,11 @@
     var context = {
       product: 'smartphone',
       round: round,
-      version: ab_version,
       breadcrumb: breadcrumb.join(','),
       action: button.name,
       value: buttonValue
     }
-    var trackingCode = templatize('{product}/{version}/{round}/{breadcrumb}/{action}:{value}', context)
+    var trackingCode = templatize('{product}/{round}/{breadcrumb}/{action}:{value}', context)
     ga('send', 'event', 'calculator', 'click', trackingCode)
     if (!gcode && context) {
       console.debug(context)
@@ -379,8 +353,6 @@
   }
   var container = document.querySelector('#container')
   var footer = document.querySelector('footer')
-  var ab_versions = ['sans-principes', 'avec-principes']
-  var ab_version = ab_versions[String(Math.random())[4] % 2 ? 0 : 1]
 
   // Replaces {variables} by variables values.
   function templatize (str, context) {
@@ -391,8 +363,7 @@
   }
 
   function showPage (page) {
-    var source = document.querySelector('#' + page + '[data-testing='+ab_version+']')
-               || document.querySelector('#' + page)
+    var source = document.querySelector('#' + page)
     var content = source.innerHTML
     content = templatize(content)
     container.innerHTML = content
