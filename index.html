@@ -338,13 +338,14 @@
     var button = event.detail
     var buttonValue = button.value || button.innerText
     var context = {
+      product: 'smartphone',
       round: round,
       version: ab_version,
       breadcrumb: breadcrumb.join(','),
       action: button.name,
       value: buttonValue
     }
-    var trackingCode = templatize('{version}/{round}/{breadcrumb}/{action}:{value}', context)
+    var trackingCode = templatize('{product}/{version}/{round}/{breadcrumb}/{action}:{value}', context)
     ga('send', 'event', 'calculator', 'click', trackingCode)
     if (!gcode && context) {
       console.debug(context)
