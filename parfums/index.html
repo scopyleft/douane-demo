@@ -180,7 +180,8 @@
     },
 
     addTva: function (percentage) {
-      this.total = Math.round(this._amount * (1 + (percentage / 100)))
+      var total = Math.round(this._amount * (1 + (percentage / 100)) * 10) / 10
+      this.total = total.toString().replace('.', ',')
     }
   }
   var container = document.querySelector('#container')
