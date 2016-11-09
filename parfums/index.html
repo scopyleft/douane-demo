@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width, initial-scale=1">
+<title>Calcul des taxes et droits de douane</title>
+<link rel=stylesheet href="/css/main.css">
+<template id=accueil>
+  <h1>Bienvenue sur le prototype de « Calcul des taxes et droits de douane » pour estimer le montant des droits à payer pour l’achat en ligne de parfums et d’eaux de toilette.</h1>
+
+  <a name=demarrer value=simulation href=#montant class=button onclick=start()>Commencer la simulation</a>
+
+  <aside>
+    <h2>Avertissement</h2>
+    <p>
+      Les montants des droits et taxes calculés peuvent être différents de ceux réellement acquittés. La consultation des textes légaux et réglementaires, qui sont les seuls à avoir force légale, demeure impérative.<br>
+      En poursuivant votre navigation sur ce site, vous acceptez l’utilisation de cookies nous permettant de suivre votre navigation ainsi que de réaliser des statistiques de visites.
+    </p>
+  </aside>
+
+</template>
+
+<template id=montant>
+  <h1>Quel est le prix d’achat <em>du parfum ou de l’eau de toilette</em>, en Euros ?</h1>
+  <form method=post onsubmit=submitAmount(event) action=#ue>
+    <input type=number name=amount placeholder=100 min=1 required>
+    <button type=submit name=montant value=continuer>Continuer</button>
+  </form>
+</template>
+
+<template id=ue>
+  <h1>Le vendeur expédie votre parfum ou eau de toilette depuis un pays de l’Union européenne.</h1>
+  <a class=button name=ue value=oui href=#tva-zero data-tracking>Oui</a>
+  <a class=button name=ue value=non href=#tva-20 data-tracking>Non</a>
+  <a class="button unknown" name=ue value=nsp href=#tva-inconnue data-tracking>Je ne sais pas</a>
+</template>
+
+<template id=a-propos>
+  <h1>À propos du prototype</h1>
+  <p>
+    La direction générale des douanes et droits indirects propose un prototype dont la finalité est d’informer l’usager de France métropolitaine des taxes qu’il pourrait avoir à acquitter en cas d’achat à distance, notamment via des sites internet de ventes en ligne.
+  </p>
+  <p>
+    S'appuyant sur les taux de <abbr title="Taxe sur la Valeur Ajoutée">TVA</abbr> à acquitter en France ainsi que sur le tarif douanier commun des pays de l'Union européenne (droits de douane), l'information restituée (taux, montants) n'a qu'un caractère indicatif.<br>
+    En particulier le prototype ne traite pas de l'ensemble des mesures du commerce extérieur et de la totalité des taxes pouvant être appliquées.
+  </p>
+  <p>
+     Les montants des droits et taxes calculés peuvent être différents de ceux réellement acquittés. La consultation des textes légaux et réglementaires, qui sont les seuls à avoir force légale, demeure impérative.
+  </p>
+
+  <a class=button name=retour value=simulation href=#accueil>Revenir à la simulation</a>
+</template>
+
+<template id=tva-zero data-last>
+  <h1>
+    Votre achat vous coûtera {calculator.amount} Euros au total (<abbr title="Toutes Taxes Comprises">TTC</abbr>).
+  </h1>
+  <p>
+    Cette réponse est valable pour l’achat <em>d’un parfum ou d’une eau de toilette</em>, acheté dans un pays de l'Union européenne, et dont le prix est <strong>{calculator.amount} Euros</strong> <abbr title="Toutes Taxes Comprises">TTC</abbr>.
+  </p>
+  <p class=principes>
+    La réception <em>du parfum ou de l’eau de toilette</em> acheté dans un pays de l'Union européenne est soumise à la <abbr title="Taxe sur la Valeur Ajoutée">TVA</abbr> du pays d'expédition.<br>
+    A priori, cette taxe est déjà incluse dans le prix affiché par le vendeur.
+  </p>
+</template>
+
+
+<template id=tva-20 data-last>
+  <h1>Votre achat vous coûtera {calculator.total} Euros au total.</h1>
+  <p>
+    Cette réponse est valable pour l'achat <em>du parfum ou de l’eau de toilette</em>, acheté hors Union européenne, et dont le prix affiché,
+    livraison comprise, est de <strong>{calculator.amount} Euros</strong>, et dans l'hypothèse où il n'y a pas de frais supplémentaires.
+  </p>
+  <div class=principes>
+    <p>
+      La réception <em>du parfum ou de l’eau de toilette</em> acheté hors Union européenne est soumise :
+    </p>
+    <ul>
+      <li>à la <abbr title="Taxe sur la Valeur Ajoutée">TVA</abbr> (20%, sur le prix du produit, les frais d'assurance et de transport et les droits de douane),</li>
+      <li>à des droits de douane, qui dans le cas <em>de parfums ou d’eaux de toilette</em> sont de 0%.</li>
+    </ul>
+    <p>
+      Attention, parfois, le transporteur peut facturer des frais supplémentaires (transport, assurance, gestion du dossier…).
+      Parfois ces frais sont déjà inclus dans le prix affiché par le vendeur. Consultez les conditions générales de vente du vendeur.
+    </p>
+  </div>
+</template>
+
+<template id=tva-inconnue data-last>
+  <h1>Votre achat vous coûtera entre {calculator.amount} et {calculator.total} Euros au total.</h1>
+  <p>
+    Cette réponse est valable pour l'achat <em>du parfum ou de l’eau de toilette</em> dont le prix affiché est de <strong>{calculator.amount} Euros</strong>,
+    et dans l'hypothèse où il n'y a pas de frais supplémentaires.
+  </p>
+  <p class=principes>
+    Si vous achetez votre <em>parfum ou eau de toilette</em> dans un pays de l'Union européenne,
+    le prix affiché est <abbr title="Toutes Taxes Comprises">TTC</abbr>.<br>
+    Sinon, il convient d'ajouter 20% de <abbr title="Taxe sur la Valeur Ajoutée">TVA</abbr> au prix affiché,
+    et de vérifier dans les conditions générales du vendeur que le transporteur ne facture pas de frais supplémentaires.
+  </p>
+</template>
+
+<template id=fin>
+  <h1>Fin de la simulation</h1>
+  <p>
+    Merci d'avoir utilisé le prototype.
+  </p>
+  <p>
+    <a class=button name=recommencer value=debut href=#accueil>Recommencer</a>
+    <a class=button name=retourner href="http://www.douane.gouv.fr/articles/a10753-achats-a-distance-et-envois-entre-particuliers#DouaneDT">Retourner sur douane.gouv.fr</a>
+    <a class=button name=twitter href="https://twitter.com/intent/tweet?text=@Droits_et_Taxes&url=http://droits-et-taxes.fr/parfums/">Réagir sur Twitter</a>
+  </p>
+</template>
+
+<template id=satisfaction>
+  <p>Cette réponse vous est-elle utile ?</p>
+  <a class=button name=satisfait value=oui href=#fin data-tracking>Oui</a>
+  <a class=button name=satisfait value=non href=#fin data-tracking>Non</a>
+</template>
+
+<header>
+  <img src=/images/logo.png>
+  <h1><span>Calcul</span> des taxes et droits de douane</h1>
+  <a name=a-propos value=prototype href=#a-propos>À propos du prototype</a>
+</header>
+
+<main id=container></main>
+<footer></footer>
+
+<script>
+  window.conf = {
+      product: 'parfums'
+  }
+</script>
+<script src=/js/main.js></script>
+</html>
