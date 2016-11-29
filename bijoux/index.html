@@ -30,9 +30,8 @@
 
 <template id=ue>
   <h1>Le vendeur expédie vos bijoux de fantaisie depuis un pays de l’Union européenne.</h1>
-  <a class=button name=ue value=oui href=#tva-zero data-tracking>Oui</a>
-  <a class=button name=ue value=non href=#tva-20 data-tracking>Non</a>
-  <a class="button unknown" name=ue value=nsp href=#tva-inconnue data-tracking>Je ne sais pas</a>
+  <a class=button name=ue value=oui href="#tva-zero" data-tracking>Oui</a>
+  <a class=button name=ue value=non href="javascript:redirectTo(calculator.amount <= 150 ? '#tva-20' : '#tva-20-frais-4')" data-tracking>Non</a>
 </template>
 
 <template id=a-propos>
@@ -53,10 +52,10 @@
 
 <template id=tva-zero data-last>
   <h1>
-    Votre achat vous coûtera {calculator.amount} Euros au total, additionnés de frais supplémentaires éventuels et de la TVA.
+    Votre achat vous coûtera {formatNum(calculator.amount)} Euros au total, additionnés de frais supplémentaires éventuels et de la TVA.
   </h1>
   <p>
-    Cette réponse est valable pour l’achat de bijoux de fantaisie, achetés dans un pays de l’Union européenne, et dont le prix est de <strong>{calculator.amount} Euros</strong> hors frais supplémentaires et hors taxes.
+    Cette réponse est valable pour l’achat de bijoux de fantaisie, achetés dans un pays de l’Union européenne, et dont le prix est de <strong>{formatNum(calculator.amount)} Euros</strong> hors frais supplémentaires et hors taxes.
   </p>
   <p class=principes>
     La réception de bijoux de fantaisie achetés dans un pays de l’Union européenne est soumise à la <abbr title="Taxe sur la Valeur Ajoutée">TVA</abbr> du pays d’expédition.<br>
@@ -64,11 +63,10 @@
   </p>
 </template>
 
-
 <template id=tva-20 data-last>
-  <h1>Votre achat vous coûtera {calculator.total} Euros au total.</h1>
+  <h1>Votre achat vous coûtera {formatNum(calculator.amountWithTva())} Euros au total.</h1>
   <p>
-    Cette réponse est valable pour l’achat de bijoux de fantaisie, achetés hors Union européenne, et dont le prix affiché hors frais supplémentaires est de VALEUR Euros.<br>
+    Cette réponse est valable pour l’achat de bijoux de fantaisie, achetés hors Union européenne, et dont le prix affiché hors frais supplémentaires est de {formatNum(calculator.amount)} Euros.<br>
   </p>
   <div class=principes>
     <p>
@@ -85,18 +83,24 @@
   </div>
 </template>
 
-<template id=tva-inconnue data-last>
-  <h1>TODO. Votre achat vous coûtera entre {calculator.amount} et {calculator.total} Euros au total.</h1>
+<template id=tva-20-frais-4 data-last>
+  <h1>Votre achat vous coûtera {formatNum(calculator.amountWithFees())} Euros au total.</h1>
   <p>
-    Cette réponse est valable pour l’achat d’un <em>smartphone</em> dont le prix affiché est de <strong>{calculator.amount} Euros</strong>,
-    et dans l’hypothèse où il n’y a pas de frais supplémentaires.
+    Cette réponse est valable pour l’achat de bijoux de fantaisie, achetés hors Union européenne, et dont le prix affiché hors frais supplémentaires est de {formatNum(calculator.amount)} Euros.<br>
   </p>
-  <p class=principes>
-    Si vous achetez votre <em>smartphone</em> dans un pays de l’Union européenne,
-    le prix affiché est <abbr title="Toutes Taxes Comprises">TTC</abbr>.<br>
-    Sinon, il convient d’ajouter 20% de <abbr title="Taxe sur la Valeur Ajoutée">TVA</abbr> au prix affiché,
-    et de vérifier dans les conditions générales du vendeur que le transporteur ne facture pas de frais supplémentaires.
-  </p>
+  <div class=principes>
+    <p>
+      La réception de bijoux de fantaisie acheté hors Union européenne est :
+      <ul>
+        <li>non soumise à des droits de douane, qui dans le cas des bijoux de fantaisie seraient de 4%, <strong>lorsque le prix affiché hors frais supplémentaires est inférieur ou égal à 150 €</strong>.</li>
+        <li>soumise à une TVA de 20% sur le prix du produit additionnés des frais supplémentaires et les droits de douane éventuels.</li>
+      </ul>
+    </p>
+    <p>
+      Attention, parfois, le transporteur peut facturer des frais supplémentaires (transport, assurance, gestion du dossier…).
+      Parfois ces frais sont déjà inclus dans le prix affiché par le vendeur. Consultez les conditions générales de vente du vendeur.
+    </p>
+  </div>
 </template>
 
 <template id=fin>
@@ -128,7 +132,10 @@
 
 <script>
   window.conf = {
-      product: 'smartphones'
+      product: 'bijoux'
+  }
+  function redirectTo(target) {
+    document.location.href = target
   }
 </script>
 <script src=/js/main.js></script>

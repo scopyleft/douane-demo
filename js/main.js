@@ -38,22 +38,20 @@ var round = 0
 var breadcrumb = []
 var calculator = {
   init: function () {
-    this._amount = 0
-    this.total = 0
+    this.amount = 0
   },
 
-  get amount () {
-    return this._amount
+  amountWithTva: function () {
+    return this.addPercentage(this.amount, 20)
   },
 
-  set amount (value) {
-    this._amount = value
-    this.addTva(20)
+  amountWithFees: function () {
+    var subtotal = this.addPercentage(this.amount, 4)
+    return this.addPercentage(subtotal, 20)
   },
 
-  addTva: function (percentage) {
-    var total = Math.round(this._amount * (1 + (percentage / 100)) * 10) / 10
-    this.total = total.toString().replace('.', ',')
+  addPercentage: function (amount, percentage) {
+    return Math.round(amount * (1 + (percentage / 100)) * 10) / 10
   }
 }
 var container = document.querySelector('#container')
@@ -61,10 +59,17 @@ var footer = document.querySelector('footer')
 
 // Replaces {variables} by variables values.
 function templatize (str, context) {
-  return str.replace(/{[\w.]*}/g, function (match) {
+  return str.replace(/{[\w.\(\)]*}/g, function (match) {
     var varName = match.substr(1, match.length - 2)
     return context ? context[varName] : eval(varName)
   })
+}
+
+function formatNum(value) {
+  if(Number(value) > 50) {
+    value = Math.round(value)
+  }
+  return String(value).replace('.', ',')
 }
 
 function showPage (page) {
