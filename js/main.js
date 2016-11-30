@@ -38,20 +38,31 @@ var round = 0
 var breadcrumb = []
 var calculator = {
   init: function () {
-    this.amount = 0
+    this._amount = 0
   },
 
-  amountWithTva: function () {
-    return this.addPercentage(this.amount, 20)
+  setAmount(value) {
+    this._amount = value
   },
 
+  amount: function () {
+    return this._amount
+  },
+
+  amountWithVAT: function () {
+    var x = this.addPercentage(this.amount(), 20)
+    debugger
+    return x
+  },
+
+  // fees (4%) are also subject to VAT (20%)
   amountWithFees: function () {
-    var subtotal = this.addPercentage(this.amount, 4)
+    var subtotal = this.addPercentage(this.amount(), 4)
     return this.addPercentage(subtotal, 20)
   },
 
   addPercentage: function (amount, percentage) {
-    return Math.round(amount * (1 + (percentage / 100)) * 10) / 10
+    return amount * (1 + (percentage / 100))
   }
 }
 var container = document.querySelector('#container')
@@ -65,11 +76,20 @@ function templatize (str, context) {
   })
 }
 
+// Returns string'ed rounded value or with a comma separated double decimal.
 function formatNum(value) {
-  if(Number(value) > 50) {
-    value = Math.round(value)
+  var rounded = Math.round(value * 10) / 10
+  var strValue = String(rounded)
+  if (strValue.indexOf('.') < 0) {
+    return strValue
   }
-  return String(value).replace('.', ',')
+  var splitted = strValue.split('.')
+  var decimal = splitted[1]
+  return splitted[0] + ',' + decimal + (decimal.length > 1 ? '' : '0')
+}
+
+function redirectTo(target) {
+  document.location.href = target
 }
 
 function showPage (page) {
@@ -102,7 +122,7 @@ function showPage (page) {
 function submitAmount (event) {
   event.preventDefault()
   var form = event.target
-  calculator.amount = parseInt(form.querySelector('[name=amount]').value, 10)
+  calculator.setAmount(parseInt(form.querySelector('[name=amount]').value, 10))
   document.location.href = form.attributes['action'].value
 }
 
