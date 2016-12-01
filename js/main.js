@@ -39,21 +39,30 @@ var breadcrumb = []
 var calculator = {
   init: function () {
     this._amount = 0
-    this.total = 0
   },
 
-  get amount () {
+  setAmount(value) {
+    this._amount = value
+  },
+
+  amount: function () {
     return this._amount
   },
 
-  set amount (value) {
-    this._amount = value
-    this.addTva(20)
+  amountWithVAT: function () {
+    var x = this.addPercentage(this.amount(), 20)
+    debugger
+    return x
   },
 
-  addTva: function (percentage) {
-    var total = Math.round(this._amount * (1 + (percentage / 100)) * 10) / 10
-    this.total = total.toString().replace('.', ',')
+  // fees (4%) are also subject to VAT (20%)
+  amountWithFees: function () {
+    var subtotal = this.addPercentage(this.amount(), 4)
+    return this.addPercentage(subtotal, 20)
+  },
+
+  addPercentage: function (amount, percentage) {
+    return amount * (1 + (percentage / 100))
   }
 }
 var container = document.querySelector('#container')
@@ -61,10 +70,26 @@ var footer = document.querySelector('footer')
 
 // Replaces {variables} by variables values.
 function templatize (str, context) {
-  return str.replace(/{[\w.]*}/g, function (match) {
+  return str.replace(/{[\w.\(\)]*}/g, function (match) {
     var varName = match.substr(1, match.length - 2)
     return context ? context[varName] : eval(varName)
   })
+}
+
+// Returns string'ed rounded value or with a comma separated double decimal.
+function formatNum(value) {
+  var rounded = Math.round(value * 10) / 10
+  var strValue = String(rounded)
+  if (strValue.indexOf('.') < 0) {
+    return strValue
+  }
+  var splitted = strValue.split('.')
+  var decimal = splitted[1]
+  return splitted[0] + ',' + decimal + (decimal.length > 1 ? '' : '0')
+}
+
+function redirectTo(target) {
+  document.location.href = target
 }
 
 function showPage (page) {
@@ -97,7 +122,7 @@ function showPage (page) {
 function submitAmount (event) {
   event.preventDefault()
   var form = event.target
-  calculator.amount = parseInt(form.querySelector('[name=amount]').value, 10)
+  calculator.setAmount(parseInt(form.querySelector('[name=amount]').value, 10))
   document.location.href = form.attributes['action'].value
 }
 
