@@ -31,7 +31,7 @@
 <template id=ue>
   <h1>Le vendeur expédie vos bijoux de fantaisie depuis un pays de l’Union européenne.</h1>
   <a class=button name=ue value=oui href="#tva-zero" data-tracking>Oui</a>
-  <a class=button name=ue value=non href="javascript:redirectTo(calculator.amount <= 150 ? '#tva-20' : '#tva-20-frais-4')" data-tracking>Non</a>
+  <a class=button name=ue value=non href="javascript:redirectTo(calculator.amount() <= 150 ? '#tva-20' : '#tva-20-frais-4')" data-tracking>Non</a>
 </template>
 
 <template id=a-propos>
@@ -70,9 +70,9 @@
   </p>
   <div class=principes>
     <p>
-      La réception de bijoux de fantaisie acheté hors Union européenne est :
+      La réception de bijoux de fantaisie achetés hors Union européenne est :
       <ul>
-        <li>non soumise à des droits de douane, qui dans le cas des bijoux de fantaisie seraient de 4%, <strong>lorsque le prix affiché hors frais supplémentaires est inférieur ou égal à 150 €</strong>.</li>
+        <li>non soumise à des droits de douane, qui dans le cas des bijoux de fantaisie seraient de 4%, lorsque le prix affiché hors frais supplémentaires est inférieur ou égal à 150€.</li>
         <li>soumise à une TVA de 20% sur le prix du produit additionnés des frais supplémentaires et les droits de douane éventuels.</li>
       </ul>
     </p>
@@ -90,9 +90,9 @@
   </p>
   <div class=principes>
     <p>
-      La réception de bijoux de fantaisie acheté hors Union européenne est :
+      La réception de bijoux de fantaisie achetés hors Union européenne est :
       <ul>
-        <li>non soumise à des droits de douane, qui dans le cas des bijoux de fantaisie seraient de 4%, <strong>lorsque le prix affiché hors frais supplémentaires est inférieur ou égal à 150 €</strong>.</li>
+        <li>soumise à des droits de douane, qui dans le cas des bijoux de fantaisie sont de 4% (puisque le prix du produit est supérieur à 150€).</li>
         <li>soumise à une TVA de 20% sur le prix du produit additionnés des frais supplémentaires et les droits de douane éventuels.</li>
       </ul>
     </p>
@@ -111,7 +111,7 @@
   <p>
     <a class=button name=recommencer value=debut href=#accueil>Recommencer</a>
     <a class=button name=retourner href="http://www.douane.gouv.fr/articles/a10753-achats-a-distance-et-envois-entre-particuliers#DouaneDT">Retourner sur douane.gouv.fr</a>
-    <a class=button name=twitter href="https://twitter.com/intent/tweet?text=@Droits_et_Taxes&url=http://droits-et-taxes.fr/smartphones/">Réagir sur Twitter</a>
+    <a class=button name=twitter href="https://twitter.com/intent/tweet?text=@Droits_et_Taxes&url=http://droits-et-taxes.fr/bijouxfantaisie/">Réagir sur Twitter</a>
   </p>
 </template>
 
@@ -132,7 +132,7 @@
 
 <script>
   window.conf = {
-      product: 'bijoux'
+    product: 'bijouxfantaisie'
   }
 </script>
 <script src=/js/main.js></script>
