@@ -1,3 +1,4 @@
+/* global conf */
 var gcodes = {
   'demo.droits-et-taxes.fr': 'UA-79921412-1',
   'dev.droits-et-taxes.fr': 'UA-81479036-1',
@@ -41,7 +42,7 @@ var calculator = {
     this._amount = 0
   },
 
-  setAmount(value) {
+  setAmount: function (value) {
     this._amount = value
   },
 
@@ -51,7 +52,6 @@ var calculator = {
 
   amountWithVAT: function () {
     var x = this.addPercentage(this.amount(), 20)
-    debugger
     return x
   },
 
@@ -77,7 +77,7 @@ function templatize (str, context) {
 }
 
 // Returns string'ed rounded value or with a comma separated double decimal.
-function formatNum(value) {
+function formatNum (value) {
   var rounded = Math.round(value * 10) / 10
   var strValue = String(rounded)
   if (strValue.indexOf('.') < 0) {
@@ -88,7 +88,7 @@ function formatNum(value) {
   return splitted[0] + ',' + decimal + (decimal.length > 1 ? '' : '0')
 }
 
-function redirectTo(target) {
+function redirectTo (target) {
   document.location.href = target
 }
 
