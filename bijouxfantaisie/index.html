@@ -7,7 +7,7 @@
 <template id=accueil>
   <h1>Bienvenue sur le prototype de « Calcul des taxes et droits de douane » pour estimer le montant des droits à payer pour l’achat en ligne de bijoux de fantaisie.</h1>
 
-  <a name=demarrer value=simulation href=#montant class=button onclick=start()>Commencer la simulation</a>
+  <a name=demarrer value=simulation href=#ue class=button onclick=start()>Commencer la simulation</a>
 
   <aside>
     <h2>Avertissement</h2>
@@ -21,7 +21,7 @@
 
 <template id=montant>
   <h1>Quel est le prix d’achat des bijoux de fantaisie, en Euros ?</h1>
-  <form method=post onsubmit=submitAmount(event) action=#ue>
+  <form method=post onsubmit=submitAmount(event)>
     <input type=number name=amount placeholder=100 min=1 required>
     <button type=submit name=montant value=continuer>Continuer</button>
   </form>
@@ -31,7 +31,7 @@
 <template id=ue>
   <h1>Le vendeur expédie vos bijoux de fantaisie depuis un pays de l’Union européenne.</h1>
   <a class=button name=ue value=oui href="#tva-zero" data-tracking>Oui</a>
-  <a class=button name=ue value=non href="javascript:redirectTo(calculator.amount() <= 150 ? '#tva-20' : '#tva-20-frais-4')" data-tracking>Non</a>
+  <a class=button name=ue value=non href="#montant" data-tracking>Non</a>
 </template>
 
 <template id=a-propos>
@@ -52,10 +52,10 @@
 
 <template id=tva-zero data-last>
   <h1>
-    Votre achat vous coûtera {formatNum(calculator.amount())} Euros au total, additionnés de frais supplémentaires éventuels et de la TVA.
+    Vos bijoux fantaisie vous couteront le prix affiché, sans frais ni taxes supplémentaires.
   </h1>
   <p>
-    Cette réponse est valable pour l’achat de bijoux de fantaisie, achetés dans un pays de l’Union européenne, et dont le prix est de <strong>{formatNum(calculator.amount())} Euros</strong> hors frais supplémentaires et hors taxes.
+    Cette réponse est valable pour l’achat de bijoux de fantaisie, achetés dans un pays de l’Union européenne.
   </p>
   <p class=principes>
     La réception de bijoux de fantaisie achetés dans un pays de l’Union européenne est soumise à la <abbr title="Taxe sur la Valeur Ajoutée">TVA</abbr> du pays d’expédition.<br>
