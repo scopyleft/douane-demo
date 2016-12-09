@@ -16,7 +16,7 @@ document.addEventListener('showpage', function (event) {
 })
 document.addEventListener('buttonclick', function (event) {
   var button = event.detail
-  var buttonValue = button.value || button.innerText
+  var buttonValue = button.value || button.innerText || button.textContent
   var context = {
     product: conf.product,
     round: round,
