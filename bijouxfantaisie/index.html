@@ -20,7 +20,7 @@
 </template>
 
 <template id=montant>
-  <h1>Quel est le prix d’achat des bijoux de fantaisie, en Euros ?</h1>
+  <h1>Quel est le prix d’achat des bijoux de fantaisie, en euros ?</h1>
   <form method=post onsubmit=submitAmount(event)>
     <input type=number name=amount placeholder=100 min=1 required>
     <button type=submit name=montant value=continuer>Continuer</button>
@@ -52,28 +52,28 @@
 
 <template id=tva-zero data-last>
   <h1>
-    Vos bijoux fantaisie vous couteront le prix affiché, sans frais ni taxes supplémentaires.
+    Vos bijoux de fantaisie vous couteront le prix affiché, sans taxes supplémentaires.
   </h1>
   <p>
-    Cette réponse est valable pour l’achat de bijoux de fantaisie, achetés dans un pays de l’Union européenne.
+    Cette réponse est valable pour l’achat de bijoux de fantaisie, achetés dans un pays de l’Union européenne, hors frais supplémentaires (frais de livraisons, …).
   </p>
   <p class=principes>
-    La réception de bijoux de fantaisie achetés dans un pays de l’Union européenne est soumise à la <abbr title="Taxe sur la Valeur Ajoutée">TVA</abbr> du pays d’expédition.<br>
+    La réception de bijoux de fantaisie achetés dans un pays de l’Union européenne n'est pas soumise à des droits de douane mais à la <abbr title="Taxe sur la Valeur Ajoutée">TVA</abbr> du pays d’expédition.<br>
     A priori, cette taxe est déjà incluse dans le prix affiché par le vendeur.
   </p>
 </template>
 
 <template id=tva-20 data-last>
-  <h1>Votre achat vous coûtera {formatNum(calculator.amountWithVAT())} Euros au total.</h1>
+  <h1>Votre achat vous coûtera {formatNum(calculator.amountWithVAT())} euros au total.</h1>
   <p>
-    Cette réponse est valable pour l’achat de bijoux de fantaisie, achetés hors Union européenne, et dont le prix affiché hors frais supplémentaires est de {formatNum(calculator.amount())} Euros.<br>
+    Cette réponse est valable pour l’achat de bijoux de fantaisie, achetés hors Union européenne, et dont le prix affiché hors frais supplémentaires est de {formatNum(calculator.amount())} euros.<br>
   </p>
   <div class=principes>
     <p>
       La réception de bijoux de fantaisie achetés hors Union européenne est :
       <ul>
         <li>non soumise à des droits de douane dans le cas où le prix affiché hors frais supplémentaires est inférieur ou égal à 150€.</li>
-        <li>soumise à une TVA de 20% sur le prix du produit additionnés des frais supplémentaires et les droits de douane éventuels.</li>
+        <li>soumise à une TVA de 20% sur le prix du produit additionnés des frais supplémentaires et des droits de douane éventuels.</li>
       </ul>
     </p>
     <p>
@@ -84,16 +84,16 @@
 </template>
 
 <template id=tva-20-frais-4 data-last>
-  <h1>Votre achat vous coûtera {formatNum(calculator.amountWithFees())} Euros au total.</h1>
+  <h1>Votre achat vous coûtera {formatNum(calculator.amountWithFees())} euros au total.</h1>
   <p>
-    Cette réponse est valable pour l’achat de bijoux de fantaisie, achetés hors Union européenne, et dont le prix affiché hors frais supplémentaires est de {formatNum(calculator.amount())} Euros.<br>
+    Cette réponse est valable pour l’achat de bijoux de fantaisie, achetés hors Union européenne, et dont le prix affiché hors frais supplémentaires est de {formatNum(calculator.amount())} euros.<br>
   </p>
   <div class=principes>
     <p>
       La réception de bijoux de fantaisie achetés hors Union européenne est :
       <ul>
         <li>soumise à des droits de douane, qui dans le cas des bijoux de fantaisie sont de 4% (puisque le prix du produit est supérieur à 150€).</li>
-        <li>soumise à une TVA de 20% sur le prix du produit additionnés des frais supplémentaires et les droits de douane éventuels.</li>
+        <li>soumise à une TVA de 20% sur le prix du produit additionnés des frais supplémentaires éventuels.</li>
       </ul>
     </p>
     <p>
