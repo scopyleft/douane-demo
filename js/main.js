@@ -16,7 +16,7 @@ document.addEventListener('showpage', function (event) {
 })
 document.addEventListener('buttonclick', function (event) {
   var button = event.detail
-  var buttonValue = button.value || button.innerText
+  var buttonValue = button.value || button.innerText || button.textContent
   var context = {
     product: conf.product,
     round: round,
@@ -88,10 +88,6 @@ function formatNum (value) {
   return splitted[0] + ',' + decimal + (decimal.length > 1 ? '' : '0')
 }
 
-function redirectTo (target) {
-  document.location.href = target
-}
-
 function showPage (page) {
   var source = document.querySelector('#' + page)
   var content = source.innerHTML
@@ -123,7 +119,7 @@ function submitAmount (event) {
   event.preventDefault()
   var form = event.target
   calculator.setAmount(parseInt(form.querySelector('[name=amount]').value, 10))
-  document.location.href = form.attributes['action'].value
+  document.location.href = calculator.amount() <= 150 ? '#tva-20' : '#tva-20-frais-4'
 }
 
 function start () {

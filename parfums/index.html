@@ -20,7 +20,7 @@
 </template>
 
 <template id=montant>
-  <h1>Quel est le prix d’achat <em>du parfum ou de l’eau de toilette</em>, en Euros ?</h1>
+  <h1>Quel est le prix d’achat <em>du parfum ou de l’eau de toilette</em>, en euros ?</h1>
   <form method=post onsubmit=submitAmount(event) action=#ue>
     <input type=number name=amount placeholder=100 min=1 required>
     <button type=submit name=montant value=continuer>Continuer</button>
@@ -52,10 +52,10 @@
 
 <template id=tva-zero data-last>
   <h1>
-    Votre achat vous coûtera {formatNum(calculator.amount())} Euros au total (<abbr title="Toutes Taxes Comprises">TTC</abbr>).
+    Votre achat vous coûtera {formatNum(calculator.amount())} euros au total (<abbr title="Toutes Taxes Comprises">TTC</abbr>).
   </h1>
   <p>
-    Cette réponse est valable pour l’achat <em>d’un parfum ou d’une eau de toilette</em>, acheté dans un pays de l'Union européenne, et dont le prix est <strong>{formatNum(calculator.amount())} Euros</strong> <abbr title="Toutes Taxes Comprises">TTC</abbr>.
+    Cette réponse est valable pour l’achat <em>d’un parfum ou d’une eau de toilette</em>, acheté dans un pays de l'Union européenne, et dont le prix est <strong>{formatNum(calculator.amount())} euros</strong> <abbr title="Toutes Taxes Comprises">TTC</abbr>.
   </p>
   <p class=principes>
     La réception <em>du parfum ou de l’eau de toilette</em> acheté dans un pays de l'Union européenne est soumise à la <abbr title="Taxe sur la Valeur Ajoutée">TVA</abbr> du pays d'expédition.<br>
@@ -65,10 +65,10 @@
 
 
 <template id=tva-20 data-last>
-  <h1>Votre achat vous coûtera {formatNum(calculator.amountWithVAT())} Euros au total.</h1>
+  <h1>Votre achat vous coûtera {formatNum(calculator.amountWithVAT())} euros au total.</h1>
   <p>
     Cette réponse est valable pour l'achat <em>du parfum ou de l’eau de toilette</em>, acheté hors Union européenne, et dont le prix affiché,
-    livraison comprise, est de <strong>{formatNum(calculator.amount())} Euros</strong>, et dans l'hypothèse où il n'y a pas de frais supplémentaires.
+    livraison comprise, est de <strong>{formatNum(calculator.amount())} euros</strong>, et dans l'hypothèse où il n'y a pas de frais supplémentaires.
   </p>
   <div class=principes>
     <p>
@@ -86,9 +86,9 @@
 </template>
 
 <template id=tva-inconnue data-last>
-  <h1>Votre achat vous coûtera entre {formatNum(calculator.amount())} et {formatNum(calculator.amountWithVAT())} Euros au total.</h1>
+  <h1>Votre achat vous coûtera entre {formatNum(calculator.amount())} et {formatNum(calculator.amountWithVAT())} euros au total.</h1>
   <p>
-    Cette réponse est valable pour l'achat <em>du parfum ou de l’eau de toilette</em> dont le prix affiché est de <strong>{formatNum(calculator.amount())} Euros</strong>,
+    Cette réponse est valable pour l'achat <em>du parfum ou de l’eau de toilette</em> dont le prix affiché est de <strong>{formatNum(calculator.amount())} euros</strong>,
     et dans l'hypothèse où il n'y a pas de frais supplémentaires.
   </p>
   <p class=principes>
