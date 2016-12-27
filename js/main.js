@@ -117,9 +117,10 @@ function showPage (page) {
 
 function submitAmount (event) {
   event.preventDefault()
+  if (typeof(preSubmitAmount) !== 'undefined') preSubmitAmount(event)
   var form = event.target
   calculator.setAmount(parseInt(form.querySelector('[name=amount]').value, 10))
-  document.location.href = calculator.amount() <= 150 ? '#tva-20' : '#tva-20-frais-4'
+  document.location.href = event.target.action
 }
 
 function start () {
