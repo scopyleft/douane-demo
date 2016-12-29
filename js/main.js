@@ -117,9 +117,9 @@ function showPage (page) {
 
 function submitAmount (event) {
   event.preventDefault()
-  if (typeof(preSubmitAmount) !== 'undefined') preSubmitAmount(event)
   var form = event.target
   calculator.setAmount(parseInt(form.querySelector('[name=amount]').value, 10))
+  if (typeof(postSubmitAmount) !== 'undefined') postSubmitAmount(event)
   document.location.href = event.target.action
 }
 
