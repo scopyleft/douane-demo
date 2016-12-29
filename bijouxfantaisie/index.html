@@ -137,7 +137,7 @@
 </script>
 <script src=/js/main.js></script>
 <script>
-  function preSubmitAmount (event) {
+  function postSubmitAmount (event) {
     event.target.action = calculator.amount() <= 150
                         ? '#tva-20' : '#tva-20-frais-4'
   }
