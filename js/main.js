@@ -40,24 +40,42 @@ var breadcrumb = []
 var calculator = {
   init: function () {
     this._amount = 0
+    this._shipping = 0
   },
 
   setAmount: function (value) {
-    this._amount = value
+    this._amount = parseInt(value, 10)
   },
 
   amount: function () {
     return this._amount
   },
 
+  setShipping: function (value) {
+    this._shipping = parseInt(value, 10)
+  },
+
+  shipping: function () {
+    return this._shipping
+  },
+
   amountWithVAT: function () {
-    var x = this.addPercentage(this.amount(), 20)
-    return x
+    return this.addPercentage(this.amount(), 20)
+  },
+
+  amountWithVATAndShipping: function () {
+    return this.addPercentage(this.amount() + this.shipping(), 20)
   },
 
   // fees (4%) are also subject to VAT (20%)
   amountWithFees: function () {
     var subtotal = this.addPercentage(this.amount(), 4)
+    return this.addPercentage(subtotal, 20)
+  },
+
+  // shipping and fees (4%) are also subject to VAT (20%)
+  amountWithFeesAndShipping: function () {
+    var subtotal = this.addPercentage(this.amount() + this.shipping(), 4)
     return this.addPercentage(subtotal, 20)
   },
 
@@ -70,7 +88,7 @@ var footer = document.querySelector('footer')
 
 // Replaces {variables} by variables values.
 function templatize (str, context) {
-  return str.replace(/{[\w.\(\)]*}/g, function (match) {
+  return str.replace(/{[\w.\+\s\(\)]*}/g, function (match) {
     var varName = match.substr(1, match.length - 2)
     return context ? context[varName] : eval(varName)
   })
@@ -118,7 +136,7 @@ function showPage (page) {
 function submitAmount (event) {
   event.preventDefault()
   var form = event.target
-  calculator.setAmount(parseInt(form.querySelector('[name=amount]').value, 10))
+  calculator.setAmount(form.querySelector('[name=amount]').value)
   if (typeof(postSubmitAmount) !== 'undefined') postSubmitAmount(event)
   document.location.href = event.target.action
 }
