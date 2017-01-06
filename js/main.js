@@ -119,7 +119,8 @@ function submitAmount (event) {
   event.preventDefault()
   var form = event.target
   calculator.setAmount(parseInt(form.querySelector('[name=amount]').value, 10))
-  document.location.href = calculator.amount() <= 150 ? '#tva-20' : '#tva-20-frais-4'
+  if (typeof(postSubmitAmount) !== 'undefined') postSubmitAmount(event)
+  document.location.href = event.target.action
 }
 
 function start () {

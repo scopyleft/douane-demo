@@ -4,6 +4,7 @@
 <meta name=viewport content="width=device-width, initial-scale=1">
 <title>Calcul des taxes et droits de douane</title>
 <link rel=stylesheet href="/css/main.css">
+
 <template id=accueil>
   <h1>Bienvenue sur le prototype de « Calcul des taxes et droits de douane » pour estimer le montant des droits à payer pour l’achat en ligne de bijoux de fantaisie.</h1>
 
@@ -16,7 +17,6 @@
       En poursuivant votre navigation sur ce site, vous acceptez l’utilisation de cookies nous permettant de suivre votre navigation ainsi que de réaliser des statistiques de visites.
     </p>
   </aside>
-
 </template>
 
 <template id=montant>
@@ -73,7 +73,7 @@
       La réception de bijoux de fantaisie achetés hors Union européenne est :
       <ul>
         <li>non soumise à des droits de douane dans le cas où le prix affiché hors frais supplémentaires est inférieur ou égal à 150€.</li>
-        <li>soumise à une TVA de 20% sur le prix du produit additionnés des frais supplémentaires et des droits de douane éventuels.</li>
+        <li>soumise à une TVA de 20% sur le prix du produit additionnés des frais supplémentaires éventuels.</li>
       </ul>
     </p>
     <p>
@@ -93,7 +93,7 @@
       La réception de bijoux de fantaisie achetés hors Union européenne est :
       <ul>
         <li>soumise à des droits de douane, qui dans le cas des bijoux de fantaisie sont de 4% (puisque le prix du produit est supérieur à 150€).</li>
-        <li>soumise à une TVA de 20% sur le prix du produit additionnés des frais supplémentaires éventuels.</li>
+        <li>soumise à une TVA de 20% sur le prix du produit additionnés des frais supplémentaires et des droits de douane éventuels.</li>
       </ul>
     </p>
     <p>
@@ -136,4 +136,10 @@
   }
 </script>
 <script src=/js/main.js></script>
+<script>
+  function postSubmitAmount (event) {
+    event.target.action = calculator.amount() <= 150
+                        ? '#tva-20' : '#tva-20-frais-4'
+  }
+</script>
 </html>
