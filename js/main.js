@@ -63,6 +63,10 @@ var calculator = {
     return this.addPercentage(this.amount(), 20)
   },
 
+  amountWithShipping: function () {
+    return this.amount() + this.shipping()
+  },
+
   amountWithVATAndShipping: function () {
     return this.addPercentage(this.amount() + this.shipping(), 20)
   },
