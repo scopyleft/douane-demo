@@ -67,8 +67,8 @@ var calculator = {
     return this.amount() + this.shipping()
   },
 
-  amountWithVATAndShipping: function () {
-    return this.addPercentage(this.amount() + this.shipping(), 20)
+  amountWithShippingAndVAT: function () {
+    return this.addPercentage(this.amountWithShipping(), 20)
   },
 
   // fees (4%) are also subject to VAT (20%)
@@ -78,8 +78,8 @@ var calculator = {
   },
 
   // shipping and fees (4%) are also subject to VAT (20%)
-  amountWithFeesAndShipping: function () {
-    var subtotal = this.addPercentage(this.amount() + this.shipping(), 4)
+  amountWithShippingAndFees: function () {
+    var subtotal = this.addPercentage(this.amountWithShipping(), 4)
     return this.addPercentage(subtotal, 20)
   },
 
