@@ -95,7 +95,11 @@ var footer = document.querySelector('footer')
 function templatize (str, context) {
   return str.replace(/{[\w.\+\s\(\)]*}/g, function (match) {
     var varName = match.substr(1, match.length - 2)
-    return context ? context[varName] : eval(varName)
+    try {
+      return context ? context[varName] : eval(varName)
+    } catch (ReferenceError) {
+      document.location.hash = 'accueil'
+    }
   })
 }
 
