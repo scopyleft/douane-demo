@@ -37,56 +37,57 @@ document.addEventListener('buttonclick', function (event) {
 
 var round = 0
 var breadcrumb = []
-var calculator = {
-  init: function () {
+var Calculator = function () {
+  this.init = function () {
     this._amount = 0
     this._shipping = 0
-  },
+  }
 
-  setAmount: function (value) {
+  this.setAmount = function (value) {
     this._amount = parseInt(value, 10)
-  },
+  }
 
-  amount: function () {
+  this.amount = function () {
     return this._amount
-  },
+  }
 
-  setShipping: function (value) {
+  this.setShipping = function (value) {
     this._shipping = parseInt(value, 10)
-  },
+  }
 
-  shipping: function () {
+  this.shipping = function () {
     return this._shipping
-  },
+  }
 
-  amountWithVAT: function () {
+  this.amountWithVAT = function () {
     return this.addPercentage(this.amount(), 20)
-  },
+  }
 
-  amountWithShipping: function () {
+  this.amountWithShipping = function () {
     return this.amount() + this.shipping()
-  },
+  }
 
-  amountWithShippingAndVAT: function () {
+  this.amountWithShippingAndVAT = function () {
     return this.addPercentage(this.amountWithShipping(), 20)
-  },
+  }
 
-  // fees (4%) are also subject to VAT (20%)
-  amountWithFees: function () {
-    var subtotal = this.addPercentage(this.amount(), 4)
+  // fees are also subject to VAT (20%)
+  this.amountWithFees = function (fees) {
+    var subtotal = this.addPercentage(this.amount(), fees)
     return this.addPercentage(subtotal, 20)
-  },
+  }
 
-  // shipping and fees (4%) are also subject to VAT (20%)
-  amountWithShippingAndFees: function () {
-    var subtotal = this.addPercentage(this.amountWithShipping(), 4)
+  // shipping and fees are also subject to VAT (20%)
+  this.amountWithShippingAndFees = function (fees) {
+    var subtotal = this.addPercentage(this.amountWithShipping(), fees)
     return this.addPercentage(subtotal, 20)
-  },
+  }
 
-  addPercentage: function (amount, percentage) {
+  this.addPercentage = function (amount, percentage) {
     return amount * (1 + (percentage / 100))
   }
 }
+var calculator = new Calculator()
 var container = document.querySelector('#container')
 var footer = document.querySelector('footer')
 
@@ -94,7 +95,11 @@ var footer = document.querySelector('footer')
 function templatize (str, context) {
   return str.replace(/{[\w.\+\s\(\)]*}/g, function (match) {
     var varName = match.substr(1, match.length - 2)
-    return context ? context[varName] : eval(varName)
+    try {
+      return context ? context[varName] : eval(varName)
+    } catch (ReferenceError) {
+      document.location.hash = 'accueil'
+    }
   })
 }
 
